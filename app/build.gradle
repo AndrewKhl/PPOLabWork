@@ -1,8 +1,10 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
+
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
     def getDescribeTags = { ->
@@ -50,21 +52,35 @@ android {
         versionName getVersionName()
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    signingConfigs {
+        config {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
+
     flavorDimensions "version"
     productFlavors {
         reliase {
             dimension "version"
+            signingConfig signingConfigs.config
         }
         developer {
             dimension "version"
             applicationIdSuffix ".dev"
             versionNameSuffix "-dev"
+            signingConfig signingConfigs.config
         }
     }
 }
