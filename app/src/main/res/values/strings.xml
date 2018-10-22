@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ProjectOnPPO</string>
+    <string name="IMEI">IMEI: </string>
 </resources>
