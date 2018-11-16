@@ -6,15 +6,67 @@ import android.content.pm.PackageManager
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
+import android.support.v7.app.AlertDialog
 import android.telephony.TelephonyManager
 import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
 
+    private val PERMISSIONS_REQUEST_READ_PHONE_STATE: Int = 1
+    private var imeiTextView: TextView? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        outputIMEI()
+
+        val versionTextView: TextView = findViewById(R.id.ValueVersion)
+        versionTextView.text = BuildConfig.VERSION_NAME
+
+        imeiTextView = findViewById(R.id.ValueIMEI)
+        getDeviceIMEI()
+    }
+
+    private fun getDeviceIMEI(){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
+                != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                            Manifest.permission.READ_PHONE_STATE)) {
+                val dialog = AlertDialog.Builder(this)
+                dialog.setMessage(resources.getString(R.string.permissionText))
+                dialog.setTitle(resources.getString(R.string.permissionTitle))
+                dialog.setCancelable(false)
+                dialog.setPositiveButton("OK") { dialogInterface, which ->
+                    requestPermission()
+                }
+                dialog.show()
+            }
+            else {
+                requestPermission()
+            }
+        }
+        else {
+            outputIMEI()
+        }
+    }
+    private fun requestPermission(){
+        ActivityCompat.requestPermissions(this,
+                arrayOf(Manifest.permission.READ_PHONE_STATE),
+                PERMISSIONS_REQUEST_READ_PHONE_STATE)
+    }
+    override fun onRequestPermissionsResult(requestCode: Int,
+                                            permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            PERMISSIONS_REQUEST_READ_PHONE_STATE -> {
+                // If request is cancelled, the result arrays are empty.
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    outputIMEI()
+                } else {
+                    imeiTextView?.text = resources.getString(R.string.noPermission)
+                }
+                return
+            }
+        }
     }
 
     fun outputIMEI(){
