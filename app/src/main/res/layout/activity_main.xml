@@ -1,45 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <RelativeLayout
+    <com.google.android.material.navigation.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:menu="@menu/navigation_menu"
+        android:layout_gravity="start">
+
+    </com.google.android.material.navigation.NavigationView>
+    <!--<RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+
         <TextView
+            android:id="@+id/CaptionIMEI"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/CaptionIMEI"
             android:text="@string/IMEI"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/CaptionIMEI"
-            android:id="@+id/ValueIMEI"/>
 
         <TextView
+            android:id="@+id/ValueIMEI"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/CaptionIMEI" />
+
+        <TextView
             android:id="@+id/CaptionVersion"
-            android:text="@string/Version"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="20dp"
+            android:text="@string/Version"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
+            android:id="@+id/ValueVersion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/CaptionVersion"
             android:layout_marginTop="20dp"
-            android:id="@+id/ValueVersion"/>
-    </RelativeLayout>
+            android:layout_toEndOf="@id/CaptionVersion" />
+    </RelativeLayout>-->
 
-</android.support.constraint.ConstraintLayout>
+
+
+</androidx.drawerlayout.widget.DrawerLayout>

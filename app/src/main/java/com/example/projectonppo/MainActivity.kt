@@ -3,16 +3,15 @@ package com.example.projectonppo
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AlertDialog
 import android.telephony.TelephonyManager
 import android.widget.TextView
 
 class MainActivity : AppCompatActivity() {
-
     private val PERMISSIONS_REQUEST_READ_PHONE_STATE: Int = 1
     private var imeiTextView: TextView? = null
 
@@ -20,11 +19,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val versionTextView: TextView = findViewById(R.id.ValueVersion)
+        /*val versionTextView: TextView = findViewById(R.id.ValueVersion)
         versionTextView.text = BuildConfig.VERSION_NAME
 
         imeiTextView = findViewById(R.id.ValueIMEI)
-        getDeviceIMEI()
+        getDeviceIMEI()*/
     }
 
     private fun getDeviceIMEI(){
@@ -36,8 +35,7 @@ class MainActivity : AppCompatActivity() {
                 dialog.setMessage(resources.getString(R.string.permissionText))
                 dialog.setTitle(resources.getString(R.string.permissionTitle))
                 dialog.setCancelable(false)
-                dialog.setPositiveButton("OK") { dialogInterface, which ->
-                    requestPermission()
+                dialog.setPositiveButton("OK") { _, _ -> requestPermission()
                 }
                 dialog.show()
             }
@@ -49,11 +47,13 @@ class MainActivity : AppCompatActivity() {
             outputIMEI()
         }
     }
+
     private fun requestPermission(){
         ActivityCompat.requestPermissions(this,
                 arrayOf(Manifest.permission.READ_PHONE_STATE),
                 PERMISSIONS_REQUEST_READ_PHONE_STATE)
     }
+
     override fun onRequestPermissionsResult(requestCode: Int,
                                             permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
                 != PackageManager.PERMISSION_GRANTED)
             return
         val telManager = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-        val imeiTextView:TextView = findViewById(R.id.ValueIMEI)
-        imeiTextView.text = telManager.deviceId
+        //val imeiTextView:TextView = findViewById(R.id.ValueIMEI)
+        //imeiTextView.text = telManager.deviceId
     }
 }
