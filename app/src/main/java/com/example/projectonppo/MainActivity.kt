@@ -1,80 +1,69 @@
 package com.example.projectonppo
 
-import android.Manifest
-import android.content.Context
-import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AlertDialog
-import android.telephony.TelephonyManager
-import android.widget.TextView
+import android.view.Menu
+import android.view.MenuItem
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.material.navigation.NavigationView
 
-class MainActivity : AppCompatActivity() {
-    private val PERMISSIONS_REQUEST_READ_PHONE_STATE: Int = 1
-    private var imeiTextView: TextView? = null
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{
+    private var refToToggle: ActionBarDrawerToggle? = null
+    private var refToDrawer: DrawerLayout? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        /*val versionTextView: TextView = findViewById(R.id.ValueVersion)
-        versionTextView.text = BuildConfig.VERSION_NAME
+        val mainLayout: DrawerLayout = findViewById(R.id.drawerLayout)
+        refToDrawer = mainLayout
+        val toggleOnSideBar = ActionBarDrawerToggle(this, mainLayout, R.string.open, R.string.close)
+        refToToggle = toggleOnSideBar
 
-        imeiTextView = findViewById(R.id.ValueIMEI)
-        getDeviceIMEI()*/
-    }
+        val navigationView: NavigationView = findViewById(R.id.nav_view)
+        navigationView.setNavigationItemSelectedListener(this)
 
-    private fun getDeviceIMEI(){
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
-                != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                            Manifest.permission.READ_PHONE_STATE)) {
-                val dialog = AlertDialog.Builder(this)
-                dialog.setMessage(resources.getString(R.string.permissionText))
-                dialog.setTitle(resources.getString(R.string.permissionTitle))
-                dialog.setCancelable(false)
-                dialog.setPositiveButton("OK") { _, _ -> requestPermission()
-                }
-                dialog.show()
-            }
-            else {
-                requestPermission()
-            }
-        }
-        else {
-            outputIMEI()
+        mainLayout.addDrawerListener(toggleOnSideBar)
+        toggleOnSideBar.syncState()
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction().replace(R.id.fragments_container, UserFragment()).commit()
+            navigationView.setCheckedItem(R.id.nav_account)
         }
     }
 
-    private fun requestPermission(){
-        ActivityCompat.requestPermissions(this,
-                arrayOf(Manifest.permission.READ_PHONE_STATE),
-                PERMISSIONS_REQUEST_READ_PHONE_STATE)
-    }
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
-    override fun onRequestPermissionsResult(requestCode: Int,
-                                            permissions: Array<String>, grantResults: IntArray) {
-        when (requestCode) {
-            PERMISSIONS_REQUEST_READ_PHONE_STATE -> {
-                // If request is cancelled, the result arrays are empty.
-                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    outputIMEI()
-                } else {
-                    imeiTextView?.text = resources.getString(R.string.noPermission)
-                }
-                return
-            }
+        when(item.itemId){
+            R.id.nav_account -> supportFragmentManager.beginTransaction().replace(R.id.fragments_container, UserFragment()).commit()
+            R.id.nav_empty1 -> supportFragmentManager.beginTransaction().replace(R.id.fragments_container, Empty1Fragment()).commit()
+            R.id.nav_empty2 -> supportFragmentManager.beginTransaction().replace(R.id.fragments_container, Empty2Fragment()).commit()
         }
+
+        refToDrawer?.closeDrawer(GravityCompat.START)
+        return true
     }
 
-    fun outputIMEI(){
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
-                != PackageManager.PERMISSION_GRANTED)
-            return
-        val telManager = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-        //val imeiTextView:TextView = findViewById(R.id.ValueIMEI)
-        //imeiTextView.text = telManager.deviceId
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        if (item.itemId == R.id.about_button){
+            supportFragmentManager.beginTransaction().replace(R.id.fragments_container, AboutFragment()).commit()
+            return true
+        }
+
+        if (refToToggle!!.onOptionsItemSelected(item))
+            return true
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.about_menu, menu)
+        return true
     }
 }
+
