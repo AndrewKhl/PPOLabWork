@@ -1,6 +1,8 @@
 package com.example.projectonppo.Fragments
 
+import android.app.ProgressDialog
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,16 +13,13 @@ import androidx.fragment.app.Fragment
 import com.example.projectonppo.Manager
 import com.example.projectonppo.Models.User
 import com.example.projectonppo.R
-import com.google.android.gms.tasks.Task
-import com.google.android.gms.tasks.Tasks
-import java.lang.Exception
+
 
 
 class UserFragment: Fragment() {
 
     private var changeProfileStatus: Boolean = false
-    private var currentUser:User? = null
-    private var mView: View? = null
+    private var manager = Manager.dataBase
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_user, container, false)
@@ -48,8 +47,6 @@ class UserFragment: Fragment() {
         editNickname.text = currentUser?.nickname ?: ""
         editEmail.text = currentUser?.email ?: ""
         editPhone.text = currentUser?.phone ?: ""
-
-        var a = editName.text as String
     }
 
     private fun getUserChange(): User
@@ -72,7 +69,6 @@ class UserFragment: Fragment() {
         val viewSwitcher = view.findViewById<ViewSwitcher>(R.id.switcherEdit)
         changeProfileStatus = false
 
-        val manager = Manager.dataBase
         //var newUser = User("Andrew", "Red", "red@mail.ru", "12331231", "123456")
 
         manager.signUser("red@mail.ru", "123456")
@@ -93,6 +89,19 @@ class UserFragment: Fragment() {
             viewSwitcher.showNext()
         }
 
+        if (manager.getCurrentUser() == null){
+            val progressDialog = ProgressDialog(context)
+            progressDialog.setMessage("Downloading user...")
+            progressDialog.setCancelable(false)
+            progressDialog.show()
+            Handler().postDelayed({ endDialog(progressDialog)}, 1500)
+        }
+        else
+            setUserInfo(manager.getCurrentUser())
+    }
+
+    private fun endDialog(dialog: ProgressDialog){
         setUserInfo(manager.getCurrentUser())
+        dialog.dismiss()
     }
 }

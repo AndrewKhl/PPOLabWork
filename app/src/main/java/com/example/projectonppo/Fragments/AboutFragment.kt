@@ -25,12 +25,12 @@ class AboutFragment: Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val versionTextView: TextView? = view.findViewById(R.id.ValueVersion)
         versionTextView?.text = BuildConfig.VERSION_NAME
 
         imeiTextView = view.findViewById(R.id.ValueIMEI)
         getDeviceIMEI()
-        super.onViewCreated(view, savedInstanceState)
     }
 
     private fun getDeviceIMEI(){
@@ -38,7 +38,7 @@ class AboutFragment: Fragment() {
                 != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(activity!!,
                             Manifest.permission.READ_PHONE_STATE)) {
-                val dialog = AlertDialog.Builder(activity!!.applicationContext)
+                val dialog = AlertDialog.Builder(context!!)
                 dialog.setMessage(resources.getString(R.string.permissionText))
                 dialog.setTitle(resources.getString(R.string.permissionTitle))
                 dialog.setCancelable(false)
