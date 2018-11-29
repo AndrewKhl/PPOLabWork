@@ -7,6 +7,10 @@ import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.example.projectonppo.Fragments.AboutFragment
+import com.example.projectonppo.Fragments.Empty1Fragment
+import com.example.projectonppo.Fragments.Empty2Fragment
+import com.example.projectonppo.Fragments.UserFragment
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener{

@@ -1,7 +1,6 @@
-package com.example.projectonppo
+package com.example.projectonppo.Fragments
 
 import android.Manifest
-import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -14,6 +13,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.example.projectonppo.BuildConfig
+import com.example.projectonppo.R
 
 class AboutFragment: Fragment() {
     private val PERMISSIONS_REQUEST_READ_PHONE_STATE: Int = 1

@@ -60,34 +60,34 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <TextView
-                    style="@style/TextInSwitchStyle"
-                    android:text="dsadsa"/>
+                    android:id="@+id/viewName"
+                    style="@style/TextInSwitchStyle" />
                 <TextView
-                    style="@style/TextInSwitchStyle"
-                    android:text="dsadsa"/>
+                    android:id="@+id/viewNickname"
+                    style="@style/TextInSwitchStyle"/>
                 <TextView
-                    style="@style/TextInSwitchStyle"
-                    android:text="dsadsa"/>
+                    android:id="@+id/viewEmail"
+                    style="@style/TextInSwitchStyle"/>
                 <TextView
-                    style="@style/TextInSwitchStyle"
-                    android:text="dsadsa"/>
+                    android:id="@+id/viewPhone"
+                    style="@style/TextInSwitchStyle"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <EditText
-                    style="@style/TextEditStyle"
-                    android:text="dsadsa"/>
+                    android:id = "@+id/editName"
+                    style="@style/TextEditStyle" />
                 <EditText
-                    style="@style/TextEditStyle"
-                    android:text="dsadsa"/>
+                    android:id = "@+id/editNickname"
+                    style="@style/TextEditStyle" />
                 <EditText
-                    style="@style/TextEditStyle"
-                    android:text="dsadsa"/>
+                    android:id = "@+id/editEmail"
+                    style="@style/TextEditStyle" />
                 <EditText
-                    style="@style/TextEditStyle"
-                    android:text="dsadsa"/>
+                    android:id = "@+id/editPhone"
+                    style="@style/TextEditStyle" />
             </LinearLayout>
         </ViewSwitcher>
 
