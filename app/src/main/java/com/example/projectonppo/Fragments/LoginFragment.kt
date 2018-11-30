@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.projectonppo.R
 
-class Empty2Fragment: Fragment() {
+class LoginUser: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_empty2, container, false)
+        return inflater.inflate(R.layout.fragment_login, container, false)
     }
 }
