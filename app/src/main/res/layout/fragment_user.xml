@@ -78,9 +78,11 @@
                 android:orientation="vertical">
                 <EditText
                     android:id = "@+id/editName"
+                    android:inputType="text"
                     style="@style/TextEditStyle" />
                 <EditText
                     android:id = "@+id/editNickname"
+                    android:inputType="text"
                     style="@style/TextEditStyle" />
                 <EditText
                     android:id = "@+id/editEmail"

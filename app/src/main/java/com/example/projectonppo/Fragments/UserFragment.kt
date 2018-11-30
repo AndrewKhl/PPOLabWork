@@ -2,9 +2,7 @@ package com.example.projectonppo.Fragments
 
 import android.app.ProgressDialog
 import android.os.Bundle
-import android.text.Editable
 import android.text.SpannableStringBuilder
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,20 +11,21 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.ViewSwitcher
 import androidx.fragment.app.Fragment
+import com.example.projectonppo.Listeners.SettingsLoader
 import com.example.projectonppo.Manager
 import com.example.projectonppo.Models.User
 import com.example.projectonppo.R
-import com.example.projectonppo.Listener.SettingsLoader
+import com.example.projectonppo.Validations.ValidationForEmail
+import com.example.projectonppo.Validations.ValidationForNickname
+import com.example.projectonppo.Validations.ValidationForPhone
 
 
 class UserFragment: Fragment() {
 
-    var editName: EditText? = null
-    var editNickname: EditText? = null
-    var editEmail: EditText? = null
-    var editPhone: EditText? = null
-
-    private var changeProfileStatus: Boolean = false
+    private var editName: EditText? = null
+    private var editNickname: EditText? = null
+    private var editEmail: EditText? = null
+    private var editPhone: EditText? = null
     private var manager = Manager.dataBase
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -61,33 +60,9 @@ class UserFragment: Fragment() {
     }
 
     private fun setValidationToEdit(){
-        editNickname!!.setOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus) {
-                if (editNickname!!.text.toString().isEmpty())
-                    editNickname!!.error = "Nickname is required"
-            }
-        }
-
-        editEmail?.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable) {
-
-                val email: String  = editEmail!!.text.toString()
-
-                if (email.isEmpty()){
-                    editEmail!!.error = "Email is required"
-                    return
-                }
-
-                val emailPattern = "^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}\$".toRegex()
-
-                if (!email.matches(emailPattern))
-                    editEmail!!.error = "Invalid email"
-            }
-
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-        })
+        editNickname?.addTextChangedListener(ValidationForNickname(editNickname))
+        editEmail?.addTextChangedListener(ValidationForEmail(editEmail))
+        editPhone?.addTextChangedListener(ValidationForPhone(editPhone))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -100,7 +75,7 @@ class UserFragment: Fragment() {
 
         val bthSave = view.findViewById<Button>(R.id.save_btn)
         val viewSwitcher = view.findViewById<ViewSwitcher>(R.id.switcherEdit)
-        changeProfileStatus = false
+        var changeProfileStatus = false
 
         setValidationToEdit()
 
