@@ -62,7 +62,6 @@ class Manager private constructor(){
         return currentUser
     }
 
-
     fun changeUser(newUserData: User){
         if (currentUser?.email != newUserData.email){
             mAuth?.currentUser?.updateEmail(newUserData.email)

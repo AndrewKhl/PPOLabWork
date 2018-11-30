@@ -41,7 +41,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-
         when(item.itemId){
             R.id.nav_account -> supportFragmentManager.beginTransaction().replace(R.id.fragments_container, UserFragment()).commit()
             R.id.nav_empty1 -> supportFragmentManager.beginTransaction().replace(R.id.fragments_container, Empty1Fragment()).commit()
@@ -53,7 +52,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
         if (item.itemId == R.id.about_button){
             supportFragmentManager.beginTransaction().replace(R.id.fragments_container, AboutFragment()).commit()
             return true

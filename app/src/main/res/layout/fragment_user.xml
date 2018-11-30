@@ -84,9 +84,11 @@
                     style="@style/TextEditStyle" />
                 <EditText
                     android:id = "@+id/editEmail"
+                    android:inputType="textEmailAddress"
                     style="@style/TextEditStyle" />
                 <EditText
                     android:id = "@+id/editPhone"
+                    android:inputType="phone"
                     style="@style/TextEditStyle" />
             </LinearLayout>
         </ViewSwitcher>

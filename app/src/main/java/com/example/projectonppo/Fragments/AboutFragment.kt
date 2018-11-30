@@ -34,7 +34,7 @@ class AboutFragment: Fragment() {
     }
 
     private fun getDeviceIMEI(){
-        if (ContextCompat.checkSelfPermission(activity!!.applicationContext, Manifest.permission.READ_PHONE_STATE)
+        if (ContextCompat.checkSelfPermission(context!!, Manifest.permission.READ_PHONE_STATE)
                 != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(activity!!,
                             Manifest.permission.READ_PHONE_STATE)) {
@@ -64,10 +64,8 @@ class AboutFragment: Fragment() {
                                             permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
             PERMISSIONS_REQUEST_READ_PHONE_STATE -> {
-                // If request is cancelled, the result arrays are empty.
-                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED))
                     outputIMEI()
-                }
                 else
                     imeiTextView?.text = resources.getString(R.string.noPermission)
 
@@ -77,7 +75,7 @@ class AboutFragment: Fragment() {
     }
 
     private fun outputIMEI(){
-        if (ActivityCompat.checkSelfPermission(activity!!.applicationContext, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED)
+        if (ActivityCompat.checkSelfPermission(context!!, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED)
             return
         val telManager = activity!!.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         imeiTextView?.text = telManager.deviceId
