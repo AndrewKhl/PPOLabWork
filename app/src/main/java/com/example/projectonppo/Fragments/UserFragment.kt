@@ -1,5 +1,6 @@
 package com.example.projectonppo.Fragments
 
+import android.annotation.SuppressLint
 import android.app.ProgressDialog
 import android.os.Bundle
 import android.text.SpannableStringBuilder
@@ -65,6 +66,7 @@ class UserFragment: Fragment() {
         editPhone?.addTextChangedListener(ValidationForPhone(editPhone))
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -88,12 +90,16 @@ class UserFragment: Fragment() {
                 changeProfileStatus = true
             }
             else {
-                manager.changeUser(getUserChange())
+                val newUser = getUserChange()
+                if (newUser != manager.getCurrentUser()){
+                    manager.changeUser(getUserChange())
+                    setUserInfo(manager.getCurrentUser())
+                }
+
                 bthSave.text = "Change"
                 changeProfileStatus = false
-
-                setUserInfo(manager.getCurrentUser())
             }
+
             viewSwitcher.showNext()
         }
 

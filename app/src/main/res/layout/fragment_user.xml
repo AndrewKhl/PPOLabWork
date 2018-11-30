@@ -17,7 +17,7 @@
                 android:layout_centerInParent="true"
                 android:layout_alignParentTop="true"
                 android:src="@drawable/default_avatar"
-                android:contentDescription="fail"
+                android:contentDescription="@string/fail"
                 android:layout_marginTop="20dp"/>
 
         <LinearLayout
@@ -103,7 +103,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/switcherEdit"
             android:layout_marginTop="20dp"
-            android:text="Change"
+            android:text="@string/change"
             android:background="@color/colorPrimaryDark"
             android:textColor="@color/White"
             android:layout_marginBottom="20dp"/>

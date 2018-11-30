@@ -9,7 +9,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.projectonppo.Fragments.AboutFragment
 import com.example.projectonppo.Fragments.Empty1Fragment
-import com.example.projectonppo.Fragments.Empty2Fragment
+import com.example.projectonppo.Fragments.LoginFragment
 import com.example.projectonppo.Fragments.UserFragment
 import com.google.android.material.navigation.NavigationView
 
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction().replace(R.id.fragments_container, UserFragment()).commit()
+            supportFragmentManager.beginTransaction().replace(R.id.fragments_container, LoginFragment()).commit()
             navigationView.setCheckedItem(R.id.nav_account)
         }
     }
@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when(item.itemId){
             R.id.nav_account -> supportFragmentManager.beginTransaction().replace(R.id.fragments_container, UserFragment()).commit()
             R.id.nav_empty1 -> supportFragmentManager.beginTransaction().replace(R.id.fragments_container, Empty1Fragment()).commit()
-            R.id.nav_empty2 -> supportFragmentManager.beginTransaction().replace(R.id.fragments_container, Empty2Fragment()).commit()
+            R.id.nav_empty2 -> supportFragmentManager.beginTransaction().replace(R.id.fragments_container, LoginFragment()).commit()
         }
 
         refToDrawer?.closeDrawer(GravityCompat.START)

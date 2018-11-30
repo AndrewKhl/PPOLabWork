@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ProjectOnPPO</string>
+    <string name="app_name">WNews</string>
     <string name="IMEI">IMEI: </string>
     <string name="version">Version: </string>
     <string name="permissionText">The app needs a permission to access your phone functions, because the app has to show you your device IMEI</string>
@@ -10,5 +10,11 @@
     <string name="name">Name: </string>
     <string name="nickname">Nickname: </string>
     <string name="email">Email: </string>
+    <string name="emailWithoutColon">Email</string>
     <string name="phone">Phone: </string>
+    <string name="fail">fail</string>
+    <string name="change">Change</string>
+    <string name="password">Password</string>
+    <string name="Login">Login</string>
+    <string name="registration">Registration</string>
 </resources>

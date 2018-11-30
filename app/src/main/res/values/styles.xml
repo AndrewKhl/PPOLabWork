@@ -1,5 +1,4 @@
 <resources>
-
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimaryDark">@color/colorPrimary</item>
@@ -35,5 +34,13 @@
         <item name="android:layout_marginTop">10dp</item>
         <item name="android:layout_marginBottom">13dp</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="ButtonOnLoginPage">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/White</item>
+        <item name="android:background">@drawable/rounded_button</item>
+        <item name="android:width">150dp</item>
     </style>
 </resources>

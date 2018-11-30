@@ -33,10 +33,11 @@ class Manager private constructor(){
     private var dbUsers: DatabaseReference
     private var currentUser: User? = null
 
+    var correctDataUser: Boolean? = null
+
     init {
         val database: FirebaseDatabase = FirebaseDatabase.getInstance()
         dbUsers = database.getReference("users")
-
         mAuth = FirebaseAuth.getInstance()
         dbUsers.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -46,6 +47,8 @@ class Manager private constructor(){
             override fun onCancelled(databaseError: DatabaseError) {
             }
         })
+
+        correctDataUser = false
     }
 
     fun addUser(user: User){
@@ -55,7 +58,8 @@ class Manager private constructor(){
     }
 
     fun signUser(email:String, password:String) {
-        mAuth?.signInWithEmailAndPassword(email, password)
+        mAuth?.signInWithEmailAndPassword(email, password)?.addOnSuccessListener { correctDataUser = true }
+                ?.addOnFailureListener{correctDataUser = false}
     }
 
     fun getCurrentUser() :User? {

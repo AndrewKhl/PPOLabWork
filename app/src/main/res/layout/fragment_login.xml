@@ -1,45 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/loginLiner"
         android:layout_centerInParent="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="140dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/wnews"
+            android:text="@string/app_name"
             android:textSize="70sp"
             android:textAlignment="center"
             android:textColor="@color/colorPrimaryDark"/>
         <EditText
+            android:id="@+id/loginEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/emailWithoutColon"
             android:textColor="@color/colorPrimary"
-            android:autofillHints=""
             android:inputType="textEmailAddress" />
         <EditText
+            android:id="@+id/loginPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/password"
             android:textColor="@color/colorPrimary"
-            android:autofillHints=""
-            android:inputType="text"/>
+            android:inputType="textPassword" />
     </LinearLayout>
 
-    <Button
+    <LinearLayout
+        android:layout_marginTop="25dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/Login"/>
+        android:layout_below="@id/loginLiner"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="re"/>
+        <Button
+            android:id="@+id/bthLogin"
+            style="@style/ButtonOnLoginPage"
+            android:text="@string/Login" />
 
+        <Button
+            android:id="@+id/btnRegistration"
+            android:text="@string/registration"
+            android:layout_marginTop="20dp"
+            style="@style/ButtonOnLoginPage"/>
+    </LinearLayout>
 
 </RelativeLayout>
