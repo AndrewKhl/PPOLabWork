@@ -33,37 +33,49 @@ class Manager private constructor(){
     private var dbUsers: DatabaseReference
     private var currentUser: User? = null
 
-    var correctDataUser: Boolean? = null
-
     init {
         val database: FirebaseDatabase = FirebaseDatabase.getInstance()
         dbUsers = database.getReference("users")
         mAuth = FirebaseAuth.getInstance()
+
         dbUsers.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                currentUser = dataSnapshot.child(mAuth?.currentUser!!.uid).getValue(User::class.java)
+                if (mAuth?.currentUser != null)
+                    currentUser = dataSnapshot.child(mAuth?.currentUser!!.uid).getValue(User::class.java)
+                else
+                    currentUser = null
             }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-            }
+            override fun onCancelled(databaseError: DatabaseError) {}
         })
-
-        correctDataUser = false
     }
 
-    fun addUser(user: User){
+    fun registerUser(user: User){
         mAuth?.createUserWithEmailAndPassword(user.email, user.password)
         signUser(user.email, user.password)
         dbUsers.child(mAuth?.currentUser!!.uid).setValue(user)
     }
 
-    fun signUser(email:String, password:String) {
-        mAuth?.signInWithEmailAndPassword(email, password)?.addOnSuccessListener { correctDataUser = true }
-                ?.addOnFailureListener{correctDataUser = false}
+    fun signUser(email:String, password:String):Boolean {
+        return try{
+            mAuth?.signInWithEmailAndPassword(email, password)
+            true
+        }
+        catch (e: Exception){
+            false
+        }
+    }
+
+    fun signOut(){
+        mAuth?.signOut()
     }
 
     fun getCurrentUser() :User? {
         return currentUser
+    }
+
+    fun userInSystem(): Boolean {
+        return mAuth!!.currentUser != null
     }
 
     fun changeUser(newUserData: User){

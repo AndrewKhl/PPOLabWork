@@ -1,112 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/avatar"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_centerInParent="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/default_avatar"
+            android:contentDescription="@string/fail"
+            android:layout_marginTop="20dp"/>
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/avatar"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:layout_centerInParent="true"
-                android:layout_alignParentTop="true"
-                android:src="@drawable/default_avatar"
-                android:contentDescription="@string/fail"
-                android:layout_marginTop="20dp"/>
+    <LinearLayout
+        android:id="@+id/captions"
+        android:layout_below="@id/avatar"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            style="@style/TextViewStyle"
+            android:text="@string/name"
+            android:layout_marginTop="7dp"
+            android:layout_gravity="end" />
 
+        <TextView
+            style="@style/TextViewStyle"
+            android:layout_gravity="end"
+            android:text="@string/nickname"/>
+
+        <TextView
+            style="@style/TextViewStyle"
+            android:layout_gravity="end"
+            android:text="@string/email"/>
+
+        <TextView
+            style="@style/TextViewStyle"
+            android:layout_gravity="end"
+            android:text="@string/phone"/>
+
+    </LinearLayout>
+
+    <ViewSwitcher
+        android:id="@+id/switcherEdit"
+        android:layout_below="@id/avatar"
+        android:layout_toEndOf="@id/captions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
         <LinearLayout
-            android:id="@+id/captions"
-            android:layout_below="@id/avatar"
-            android:layout_width="160dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
-                style="@style/TextViewStyle"
-                android:text="@string/name"
-                android:layout_marginTop="7dp"
-                android:layout_gravity="end" />
-
+                android:id="@+id/viewName"
+                style="@style/TextInSwitchStyle" />
             <TextView
-                style="@style/TextViewStyle"
-                android:layout_gravity="end"
-                android:text="@string/nickname"/>
-
+                android:id="@+id/viewNickname"
+                style="@style/TextInSwitchStyle"/>
             <TextView
-                style="@style/TextViewStyle"
-                android:layout_gravity="end"
-                android:text="@string/email"/>
-
+                android:id="@+id/viewEmail"
+                style="@style/TextInSwitchStyle"/>
             <TextView
-                style="@style/TextViewStyle"
-                android:layout_gravity="end"
-                android:text="@string/phone"/>
-
+                android:id="@+id/viewPhone"
+                style="@style/TextInSwitchStyle"/>
         </LinearLayout>
-
-        <ViewSwitcher
-            android:id="@+id/switcherEdit"
-            android:layout_below="@id/avatar"
-            android:layout_toEndOf="@id/captions"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/viewName"
-                    style="@style/TextInSwitchStyle" />
-                <TextView
-                    android:id="@+id/viewNickname"
-                    style="@style/TextInSwitchStyle"/>
-                <TextView
-                    android:id="@+id/viewEmail"
-                    style="@style/TextInSwitchStyle"/>
-                <TextView
-                    android:id="@+id/viewPhone"
-                    style="@style/TextInSwitchStyle"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <EditText
-                    android:id = "@+id/editName"
-                    android:inputType="text"
-                    style="@style/TextEditStyle" />
-                <EditText
-                    android:id = "@+id/editNickname"
-                    android:inputType="text"
-                    style="@style/TextEditStyle" />
-                <EditText
-                    android:id = "@+id/editEmail"
-                    android:inputType="textEmailAddress"
-                    style="@style/TextEditStyle" />
-                <EditText
-                    android:id = "@+id/editPhone"
-                    android:inputType="phone"
-                    style="@style/TextEditStyle" />
-            </LinearLayout>
-        </ViewSwitcher>
-
-
-        <Button
-            android:id="@+id/save_btn"
-            android:layout_centerInParent="true"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/switcherEdit"
-            android:layout_marginTop="20dp"
-            android:text="@string/change"
-            android:background="@color/colorPrimaryDark"
-            android:textColor="@color/White"
-            android:layout_marginBottom="20dp"/>
-        </RelativeLayout>
-    </ScrollView>
-</RelativeLayout>
+            android:orientation="vertical">
+            <EditText
+                android:id = "@+id/editName"
+                android:inputType="text"
+                style="@style/TextEditStyle" />
+            <EditText
+                android:id = "@+id/editNickname"
+                android:inputType="text"
+                style="@style/TextEditStyle" />
+            <EditText
+                android:id = "@+id/editEmail"
+                android:inputType="textEmailAddress"
+                style="@style/TextEditStyle" />
+            <EditText
+                android:id = "@+id/editPhone"
+                android:inputType="phone"
+                style="@style/TextEditStyle" />
+        </LinearLayout>
+    </ViewSwitcher>
+
+
+    <Button
+        android:id="@+id/save_btn"
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/switcherEdit"
+        android:layout_marginTop="20dp"
+        android:text="@string/change"
+        android:background="@drawable/rounded_button"
+        android:textColor="@color/White"
+        android:layout_marginBottom="20dp"/>
+    </RelativeLayout>
+</ScrollView>

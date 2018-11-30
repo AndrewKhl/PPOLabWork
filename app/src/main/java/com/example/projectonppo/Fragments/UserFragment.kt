@@ -17,8 +17,8 @@ import com.example.projectonppo.Manager
 import com.example.projectonppo.Models.User
 import com.example.projectonppo.R
 import com.example.projectonppo.Validations.ValidationForEmail
-import com.example.projectonppo.Validations.ValidationForNickname
 import com.example.projectonppo.Validations.ValidationForPhone
+import com.example.projectonppo.Validations.ValidationForRequired
 
 
 class UserFragment: Fragment() {
@@ -61,7 +61,7 @@ class UserFragment: Fragment() {
     }
 
     private fun setValidationToEdit(){
-        editNickname?.addTextChangedListener(ValidationForNickname(editNickname))
+        editNickname?.addTextChangedListener(ValidationForRequired(editNickname, "nickname"))
         editEmail?.addTextChangedListener(ValidationForEmail(editEmail))
         editPhone?.addTextChangedListener(ValidationForPhone(editPhone))
     }
@@ -103,6 +103,7 @@ class UserFragment: Fragment() {
             viewSwitcher.showNext()
         }
 
+        /*
         if (manager.getCurrentUser() == null){
             val progressDialog = ProgressDialog(context)
             progressDialog.setMessage("Downloading user...")
@@ -120,7 +121,7 @@ class UserFragment: Fragment() {
                 }
             }, email = "red@mail.ru", password = "123456").execute()
         }
-        else
+        else*/
             setUserInfo(manager.getCurrentUser())
     }
 }

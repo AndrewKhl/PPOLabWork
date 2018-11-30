@@ -4,7 +4,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
 
-class ValidationForNickname(val editNickname: EditText?): TextWatcher {
+class ValidationForRequired(val editNickname: EditText?, val message:String = ""): TextWatcher {
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -13,7 +13,7 @@ class ValidationForNickname(val editNickname: EditText?): TextWatcher {
         val email: String  = editNickname?.text.toString()
 
         if (email.isEmpty()){
-            editNickname?.error = "Nickname is required"
+            editNickname?.error = "Nickname is $message"
             return
         }
     }
