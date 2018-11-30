@@ -19,6 +19,7 @@ import com.example.projectonppo.R
 import com.example.projectonppo.Validations.ValidationForEmail
 import com.example.projectonppo.Validations.ValidationForPhone
 import com.example.projectonppo.Validations.ValidationForRequired
+import java.lang.Exception
 
 
 class UserFragment: Fragment() {
@@ -81,7 +82,7 @@ class UserFragment: Fragment() {
 
         setValidationToEdit()
 
-        //var newUser = User("Andrew", "Red", "red@mail.ru", "12331231", "123456")
+        //var newwser = User("Andrew", "Red", "red@mail.ru", "12331231", "123456")
 
         bthSave.setOnClickListener {
             if (!changeProfileStatus) {
@@ -103,7 +104,7 @@ class UserFragment: Fragment() {
             viewSwitcher.showNext()
         }
 
-        /*
+
         if (manager.getCurrentUser() == null){
             val progressDialog = ProgressDialog(context)
             progressDialog.setMessage("Downloading user...")
@@ -112,16 +113,24 @@ class UserFragment: Fragment() {
             SettingsLoader(object : SettingsLoader.LoadListener
             {
                 override fun onPreExecute() {
+
                     progressDialog.show()
                 }
 
                 override fun onPostExecute() {
-                    setUserInfo(manager.getCurrentUser())
                     progressDialog.dismiss()
+                    setUserInfo(manager.getCurrentUser())
                 }
-            }, email = "red@mail.ru", password = "123456").execute()
+
+                override fun doInBackground() {
+                    while(true){
+                        if (manager.getCurrentUser() != null)
+                            break
+                    }
+                }
+            }).execute()
         }
-        else*/
+        else
             setUserInfo(manager.getCurrentUser())
     }
 }

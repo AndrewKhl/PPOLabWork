@@ -5,10 +5,11 @@ import android.os.AsyncTask
 import com.example.projectonppo.Manager
 
 
-class SettingsLoader(internal var listener: LoadListener, var email: String, var password: String) : AsyncTask<Void, Void, Void?>() {
+class SettingsLoader(internal var listener: LoadListener) : AsyncTask<Void, Void, Void?>() {
     interface LoadListener {
         fun onPreExecute()
         fun onPostExecute()
+        fun doInBackground()
     }
 
     override fun onPreExecute() {
@@ -17,12 +18,7 @@ class SettingsLoader(internal var listener: LoadListener, var email: String, var
     }
 
     override fun doInBackground(vararg voids: Void): Void? {
-        val manager = Manager.dataBase
-        manager.signUser(email, password)
-        while (true) {
-            if (manager.getCurrentUser() != null)
-                break
-        }
+        listener.doInBackground()
         return null
     }
 

@@ -20,11 +20,13 @@ import com.google.firebase.auth.AuthResult
 import android.R.attr.password
 import android.app.Activity
 import com.example.projectonppo.Fragments.UserFragment
+import com.example.projectonppo.Listeners.SettingsLoader
 import com.example.projectonppo.R.string.email
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.internal.FirebaseAppHelper.getUid
+import java.lang.reflect.Executable
 
 class Manager private constructor(){
 
@@ -37,28 +39,35 @@ class Manager private constructor(){
         val database: FirebaseDatabase = FirebaseDatabase.getInstance()
         dbUsers = database.getReference("users")
         mAuth = FirebaseAuth.getInstance()
-
-        dbUsers.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                if (mAuth?.currentUser != null)
-                    currentUser = dataSnapshot.child(mAuth?.currentUser!!.uid).getValue(User::class.java)
-                else
-                    currentUser = null
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {}
-        })
     }
 
     fun registerUser(user: User){
-        mAuth?.createUserWithEmailAndPassword(user.email, user.password)
-        signUser(user.email, user.password)
+       // mAuth?.createUserWithEmailAndPassword(user.email, user.password)
+        //signUser(user.email, user.password)
+        //mAuth?.signInWithEmailAndPassword(user.email, user.password)
+        //var w = mAuth?.currentUser
         dbUsers.child(mAuth?.currentUser!!.uid).setValue(user)
     }
 
     fun signUser(email:String, password:String):Boolean {
         return try{
             mAuth?.signInWithEmailAndPassword(email, password)
+
+            SettingsLoader(object : SettingsLoader.LoadListener
+            {
+                override fun onPreExecute() {}
+
+                override fun onPostExecute() {
+                    setListenerOnDatabase()
+                }
+
+                override fun doInBackground() {
+                    while(true){
+                        if (mAuth?.currentUser != null)
+                            break
+                    }
+                }
+            }).execute()
             true
         }
         catch (e: Exception){
@@ -75,7 +84,7 @@ class Manager private constructor(){
     }
 
     fun userInSystem(): Boolean {
-        return mAuth!!.currentUser != null
+        return mAuth?.currentUser != null
     }
 
     fun changeUser(newUserData: User){
@@ -93,5 +102,16 @@ class Manager private constructor(){
 
     companion object {
         val dataBase: Manager by lazy { Holder.singleton }
+    }
+
+    private fun setListenerOnDatabase(){
+        dbUsers.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (mAuth?.currentUser != null)
+                    currentUser = dataSnapshot.child(mAuth?.currentUser!!.uid).getValue(User::class.java)
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {}
+        })
     }
 }
