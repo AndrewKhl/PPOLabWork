@@ -13,7 +13,7 @@ class ValidationForRequired(val editNickname: EditText?, val message:String = ""
         val email: String  = editNickname?.text.toString()
 
         if (email.isEmpty()){
-            editNickname?.error = "Nickname is $message"
+            editNickname?.error = "$message is required"
             return
         }
     }

@@ -62,7 +62,7 @@ class UserFragment: Fragment() {
     }
 
     private fun setValidationToEdit(){
-        editNickname?.addTextChangedListener(ValidationForRequired(editNickname, "nickname"))
+        editNickname?.addTextChangedListener(ValidationForRequired(editNickname, "Nickname"))
         editEmail?.addTextChangedListener(ValidationForEmail(editEmail))
         editPhone?.addTextChangedListener(ValidationForPhone(editPhone))
     }

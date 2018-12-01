@@ -1,5 +1,6 @@
 package com.example.projectonppo.Fragments
 
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.projectonppo.Listeners.SettingsLoader
 import com.example.projectonppo.MainActivity
 import com.example.projectonppo.Manager
 import com.example.projectonppo.Models.User
@@ -30,6 +32,7 @@ class LoginFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val manager = Manager.dataBase
+        manager.signOut()
         editEmail = view.findViewById(R.id.loginEmail)
         editPassword = view.findViewById(R.id.loginPassword)
 
@@ -44,10 +47,36 @@ class LoginFragment: Fragment() {
                 val email = editEmail?.text.toString().trim()
                 val password = editPassword?.text.toString().trim()
 
-                if (manager.signUser(email, password))
-                    fragmentManager!!.beginTransaction().replace(R.id.fragments_container, UserFragment()).commit()
-                else
-                    Toast.makeText(context, "Invalid email or password", Toast.LENGTH_SHORT).show()
+                var successSign:Boolean? = false
+                val progressDialog = ProgressDialog(context)
+                progressDialog.setMessage("Check data user...")
+                progressDialog.setCancelable(false)
+
+                SettingsLoader(object : SettingsLoader.LoadListener
+                {
+                    override fun onPreExecute() {
+                        manager.signUser(email, password)
+                        progressDialog.show()
+                    }
+
+                    override fun onPostExecute() {
+                        progressDialog.dismiss()
+                        successSign = manager.successSign
+                        if (successSign == true)
+                            fragmentManager!!.beginTransaction().replace(R.id.fragments_container, UserFragment()).commit()
+                        else
+                            Toast.makeText(context, "Invalid email or password", Toast.LENGTH_SHORT).show()
+                    }
+
+                    override fun doInBackground() {
+                        while(true){
+                            if (manager.successSign != null)
+                                break
+                        }
+                    }
+                }).execute()
+
+
             }
             else
                 Toast.makeText(context, "Correct the mistakes", Toast.LENGTH_SHORT).show()
@@ -56,7 +85,7 @@ class LoginFragment: Fragment() {
 
     private fun setValidationToEdit(){
         editEmail?.addTextChangedListener(ValidationForEmail(editEmail))
-        editPassword?.addTextChangedListener(ValidationForRequired(editPassword, "password"))
+        editPassword?.addTextChangedListener(ValidationForRequired(editPassword, "Password"))
     }
 
     private fun checkEditOnError(): Boolean{
