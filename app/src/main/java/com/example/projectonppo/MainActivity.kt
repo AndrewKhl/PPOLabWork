@@ -11,6 +11,7 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.projectonppo.DeepLinks.DeepLinksManager
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity(){
@@ -28,6 +29,8 @@ class MainActivity : AppCompatActivity(){
 
         drawerLayout = findViewById(R.id.drawerLayout)
         setupActionBarWithNavController(navController!!, drawerLayout)
+
+        DeepLinksManager.addNavigation(navController, this)
     }
 
     override fun onSupportNavigateUp(): Boolean {
