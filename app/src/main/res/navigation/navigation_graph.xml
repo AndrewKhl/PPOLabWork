@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/userFragment">
+
+    <fragment
+        tools:layout="@layout/fragment_user"
+        android:id="@+id/userFragment"
+        android:name="com.example.projectonppo.Fragments.UserFragment"
+        android:label="UserFragment" />
+    <fragment
+        tools:layout="@layout/fragment_registration"
+        android:id="@+id/registrationFragment"
+        android:name="com.example.projectonppo.Fragments.RegistrationFragment"
+        android:label="RegistrationFragment" />
+    <fragment
+        tools:layout="@layout/fragment_login"
+        android:id="@+id/loginFragment"
+        android:name="com.example.projectonppo.Fragments.LoginFragment"
+        android:label="LoginFragment" />
+    <fragment
+        tools:layout="@layout/fragment_empty1"
+        android:id="@+id/empty1Fragment"
+        android:name="com.example.projectonppo.Fragments.Empty1Fragment"
+        android:label="Empty1Fragment" />
+    <fragment
+        tools:layout="@layout/fragment_about"
+        android:id="@+id/aboutFragment"
+        android:name="com.example.projectonppo.Fragments.AboutFragment"
+        android:label="AboutFragment" />
+</navigation>

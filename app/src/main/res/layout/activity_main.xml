@@ -7,10 +7,14 @@
     android:id="@+id/drawerLayout"
     tools:context=".MainActivity">
 
-    <FrameLayout
-        android:id="@+id/fragments_container"
+    <fragment
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="0dp"
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        app:navGraph="@navigation/navigation_graph"
+        app:defaultNavHost="true" />
+
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_menu"

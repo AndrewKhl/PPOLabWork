@@ -2,8 +2,6 @@ package com.example.projectonppo.Listeners
 
 import android.os.AsyncTask
 
-import com.example.projectonppo.Manager
-
 
 class SettingsLoader(internal var listener: LoadListener) : AsyncTask<Void, Void, Void?>() {
     interface LoadListener {

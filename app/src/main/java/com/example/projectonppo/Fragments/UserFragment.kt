@@ -1,6 +1,6 @@
 package com.example.projectonppo.Fragments
 
-import android.annotation.SuppressLint
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
@@ -11,7 +11,9 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.ViewSwitcher
 import androidx.fragment.app.Fragment
-import com.example.projectonppo.Manager
+import androidx.navigation.fragment.findNavController
+import com.example.projectonppo.Databases.Manager
+import com.example.projectonppo.Listeners.SettingsLoader
 import com.example.projectonppo.Models.User
 import com.example.projectonppo.R
 import com.example.projectonppo.Validations.ValidationForEmail
@@ -64,9 +66,13 @@ class UserFragment: Fragment() {
         editPhone?.addTextChangedListener(ValidationForPhone(editPhone))
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        if (!manager.userInSystem()){
+            findNavController().navigate(R.id.loginFragment)
+            return
+        }
 
         editName = view.findViewById(R.id.editName)
         editNickname = view.findViewById(R.id.editNickname)
@@ -99,6 +105,36 @@ class UserFragment: Fragment() {
             viewSwitcher.showNext()
         }
 
-        setUserInfo(manager.getCurrentUser())
+        waitUserLoad()
+    }
+
+    private fun waitUserLoad(){
+        if (manager.getCurrentUser() != null) {
+            setUserInfo(manager.getCurrentUser())
+            return
+        }
+
+        val progressDialog = ProgressDialog(context)
+        progressDialog.setMessage("Load user...")
+        progressDialog.setCancelable(false)
+
+        SettingsLoader(object : SettingsLoader.LoadListener
+        {
+            override fun onPreExecute() {
+                progressDialog.show()
+            }
+
+            override fun onPostExecute() {
+                progressDialog.dismiss()
+                setUserInfo(manager.getCurrentUser())
+            }
+
+            override fun doInBackground() {
+                while(true){
+                    if (manager.getCurrentUser() != null)
+                        break
+                }
+            }
+        }).execute()
     }
 }

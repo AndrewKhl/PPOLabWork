@@ -7,8 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.projectonppo.Listeners.SettingsLoader
-import com.example.projectonppo.Manager
+import com.example.projectonppo.Databases.Manager
 import com.example.projectonppo.Models.User
 import com.example.projectonppo.R
 import com.example.projectonppo.Validations.ValidationForEmail
@@ -59,7 +60,7 @@ class RegistrationFragment: Fragment() {
                         override fun onPostExecute() {
                             progressDialog.dismiss()
                             if (manager.successRegistration == true)
-                                fragmentManager!!.beginTransaction().replace(R.id.fragments_container, UserFragment()).commit()
+                                findNavController().navigate(R.id.userFragment)
                             else
                                 Toast.makeText(context, "Email is already taken, please choose another one", Toast.LENGTH_SHORT).show()
                         }
@@ -81,7 +82,7 @@ class RegistrationFragment: Fragment() {
         }
 
         btnBackToLogin.setOnClickListener {
-            fragmentManager!!.beginTransaction().replace(R.id.fragments_container, LoginFragment()).commit()
+            findNavController().navigate(R.id.loginFragment)
         }
     }
 

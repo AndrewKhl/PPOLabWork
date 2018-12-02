@@ -6,12 +6,12 @@ import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.projectonppo.Listeners.SettingsLoader
-import com.example.projectonppo.Manager
+import com.example.projectonppo.Databases.Manager
 import com.example.projectonppo.R
 import com.example.projectonppo.Validations.ValidationForEmail
 import com.example.projectonppo.Validations.ValidationForRequired
@@ -58,7 +58,7 @@ class LoginFragment: Fragment() {
                     override fun onPostExecute() {
                         progressDialog.dismiss()
                         if (manager.successSign == true)
-                            fragmentManager!!.beginTransaction().replace(R.id.fragments_container, UserFragment()).commit()
+                            findNavController().navigate(R.id.userFragment)
                         else
                             Toast.makeText(context, "Invalid email or password", Toast.LENGTH_SHORT).show()
                     }
@@ -79,7 +79,7 @@ class LoginFragment: Fragment() {
         }
 
         btnRegistration.setOnClickListener {
-            fragmentManager!!.beginTransaction().replace(R.id.fragments_container, RegistrationFragment()).commit()
+            findNavController().navigate(R.id.registrationFragment)
         }
     }
 

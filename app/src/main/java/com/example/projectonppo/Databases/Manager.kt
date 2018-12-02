@@ -1,32 +1,12 @@
-package com.example.projectonppo
+package com.example.projectonppo.Databases
 
-import android.content.ContentValues.TAG
-import android.util.Log
-import android.widget.Toast
 import com.example.projectonppo.Models.User
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.OnSuccessListener
-import com.google.android.gms.tasks.Task
-import com.google.android.gms.tasks.Tasks
-import androidx.annotation.NonNull
-import com.google.android.gms.tasks.OnFailureListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.firestore.*
-import java.lang.Exception
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.AuthResult
-import android.R.attr.password
-import android.app.Activity
-import com.example.projectonppo.Fragments.UserFragment
-import com.example.projectonppo.Listeners.SettingsLoader
-import com.example.projectonppo.R.string.email
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.internal.FirebaseAppHelper.getUid
-import java.lang.reflect.Executable
 
 class Manager private constructor() {
 
@@ -40,17 +20,25 @@ class Manager private constructor() {
         val database: FirebaseDatabase = FirebaseDatabase.getInstance()
         dbUsers = database.getReference("users")
         mAuth = FirebaseAuth.getInstance()
+        setListenerOnDatabase()
+    }
+
+    private object Holder {
+        val singleton = Manager()
+    }
+
+    companion object {
+        val dataBase: Manager by lazy { Holder.singleton }
     }
 
     fun registerUser(user: User) {
         successRegistration = null
         mAuth?.createUserWithEmailAndPassword(user.email, user.password)?.addOnCompleteListener { task ->
             successRegistration = if (task.isSuccessful) {
-                setListenerOnDatabase()
-                dbUsers.child(mAuth?.currentUser!!.uid).setValue(user)
+                signUser(user.email, user.password)
                 user.password = ""
                 currentUser = user
-                signUser(user.email, user.password)
+                dbUsers.child(mAuth?.currentUser!!.uid).setValue(user)
                 true
             } else {
                 false
@@ -92,14 +80,6 @@ class Manager private constructor() {
             dbUsers.child(mAuth?.currentUser!!.uid).setValue(newUserData)
             currentUser = newUserData
         }
-    }
-
-    private object Holder {
-        val singleton = Manager()
-    }
-
-    companion object {
-        val dataBase: Manager by lazy { Holder.singleton }
     }
 
     private fun setListenerOnDatabase() {
