@@ -2,47 +2,38 @@ package com.example.projectonppo.Fragments
 
 import android.app.ProgressDialog
 import android.os.Bundle
-import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.projectonppo.Listeners.SettingsLoader
 import com.example.projectonppo.Databases.Manager
+import com.example.projectonppo.Listeners.SettingsLoader
 import com.example.projectonppo.R
 import com.example.projectonppo.Validations.ValidationForEmail
 import com.example.projectonppo.Validations.ValidationForRequired
 import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment: Fragment() {
-
-    private var editEmail: EditText? = null
-    private var editPassword: EditText? = null
+    val manager = Manager.dataBase
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        manager.signOut()
         return inflater.inflate(R.layout.fragment_login, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val manager = Manager.dataBase
-        manager.signOut()
-        editEmail = view.findViewById(R.id.loginEmail)
-        editPassword = view.findViewById(R.id.loginPassword)
-
         setValidationToEdit()
 
-        editEmail?.text = SpannableStringBuilder("red@mail.ru")
-        editPassword?.text = SpannableStringBuilder("123456")
+        //editEmailLogin?.text = SpannableStringBuilder("red@mail.ru")
+        //editPasswordLogin?.text = SpannableStringBuilder("123456")
 
-        //val bthLogin = view.findViewById<Button>(R.id.bthLogin)
         bthLogin.setOnClickListener {
             if (checkEditOnError()){
-                val email = editEmail?.text.toString().trim()
-                val password = editPassword?.text.toString().trim()
+                val email = editEmailLogin?.text.toString().trim()
+                val password = editPasswordLogin?.text.toString().trim()
 
                 val progressDialog = ProgressDialog(context)
                 progressDialog.setMessage("Check data user...")
@@ -84,12 +75,12 @@ class LoginFragment: Fragment() {
     }
 
     private fun setValidationToEdit(){
-        editEmail?.addTextChangedListener(ValidationForEmail(editEmail))
-        editPassword?.addTextChangedListener(ValidationForRequired(editPassword, "Password"))
+        editEmailLogin?.addTextChangedListener(ValidationForEmail(editEmailLogin))
+        editPasswordLogin?.addTextChangedListener(ValidationForRequired(editPasswordLogin, "Password"))
     }
 
     private fun checkEditOnError(): Boolean{
-        if ((editEmail?.error != null) or (editPassword?.error != null))
+        if ((editEmailLogin?.error != null) or (editPasswordLogin?.error != null))
             return false
         return true
     }
