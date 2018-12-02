@@ -50,7 +50,7 @@
         </LinearLayout>
 
         <ViewSwitcher
-            android:id="@+id/switcherEdit"
+            android:id="@+id/viewSwitcherChange"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/avatar"
@@ -84,32 +84,32 @@
                 android:orientation="vertical">
 
                 <EditText
-                    android:id="@+id/editName"
+                    android:id="@+id/editNameChange"
                     style="@style/TextEditStyle"
                     android:inputType="text" />
 
                 <EditText
-                    android:id="@+id/editNickname"
+                    android:id="@+id/editNicknameChange"
                     style="@style/TextEditStyle"
                     android:inputType="text" />
 
                 <EditText
-                    android:id="@+id/editEmail"
+                    android:id="@+id/editEmailChange"
                     style="@style/TextEditStyle"
                     android:inputType="textEmailAddress" />
 
                 <EditText
-                    android:id="@+id/editPhone"
+                    android:id="@+id/editPhoneChange"
                     style="@style/TextEditStyle"
                     android:inputType="phone" />
             </LinearLayout>
         </ViewSwitcher>
 
         <Button
-            android:id="@+id/save_btn"
+            android:id="@+id/btnSave"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/switcherEdit"
+            android:layout_below="@id/viewSwitcherChange"
             android:layout_centerInParent="true"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"

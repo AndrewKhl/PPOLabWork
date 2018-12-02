@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.projectonppo.Databases.Manager
@@ -16,14 +17,10 @@ import com.example.projectonppo.R
 import com.example.projectonppo.Validations.ValidationForEmail
 import com.example.projectonppo.Validations.ValidationForPhone
 import com.example.projectonppo.Validations.ValidationForRequired
+import kotlinx.android.synthetic.main.fragment_user.*
 
 
 class UserFragment: Fragment() {
-
-    private var editName: EditText? = null
-    private var editNickname: EditText? = null
-    private var editEmail: EditText? = null
-    private var editPhone: EditText? = null
     private var manager = Manager.dataBase
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -32,7 +29,6 @@ class UserFragment: Fragment() {
             findNavController().navigate(R.id.loginFragment)
             return null
         }
-
         return inflater.inflate(R.layout.fragment_user, container, false)
     }
 
@@ -49,58 +45,61 @@ class UserFragment: Fragment() {
     }
 
     private fun setUserEdit(currentUser: User?){
-        editName?.text = SpannableStringBuilder(currentUser?.name)
-        editNickname?.text = SpannableStringBuilder(currentUser?.nickname)
-        editEmail?.text = SpannableStringBuilder(currentUser?.email)
-        editPhone?.text = SpannableStringBuilder(currentUser?.phone)
+        editNameChange?.text = SpannableStringBuilder(currentUser?.name)
+        editNicknameChange?.text = SpannableStringBuilder(currentUser?.nickname)
+        editEmailChange?.text = SpannableStringBuilder(currentUser?.email)
+        editPhoneChange?.text = SpannableStringBuilder(currentUser?.phone)
     }
 
     private fun getUserChange(): User {
-        val name = editName?.text.toString().trim()
-        val nickname = editNickname?.text.toString().trim()
-        val email = editEmail?.text.toString().trim()
-        val phone = editPhone?.text.toString().trim()
+        val name = editNameChange?.text.toString().trim()
+        val nickname = editNicknameChange?.text.toString().trim()
+        val email = editEmailChange?.text.toString().trim()
+        val phone = editPhoneChange?.text.toString().trim()
         return User(name, nickname, email, phone)
     }
 
     private fun setValidationToEdit(){
-        editNickname?.addTextChangedListener(ValidationForRequired(editNickname, "Nickname"))
-        editEmail?.addTextChangedListener(ValidationForEmail(editEmail))
-        editPhone?.addTextChangedListener(ValidationForPhone(editPhone))
+        editNicknameChange?.addTextChangedListener(ValidationForRequired(editNicknameChange, "Nickname"))
+        editEmailChange?.addTextChangedListener(ValidationForEmail(editEmailChange))
+        editPhoneChange?.addTextChangedListener(ValidationForPhone(editPhoneChange))
+    }
+
+    private fun checkEditOnError(): Boolean{
+        if ((editEmailChange.error != null) || (editEmailChange.text.isEmpty()))
+            return false
+        if ((editNicknameChange.error != null) || (editNicknameChange.text.isEmpty()))
+            return false
+        if ((editNameChange.error != null) || (editNameChange.text.isEmpty()))
+            return false
+        if ((editPhoneChange.error != null) || (editPhoneChange.text.isEmpty()))
+            return false
+        return true
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        editName = view.findViewById(R.id.editName)
-        editNickname = view.findViewById(R.id.editNickname)
-        editEmail = view.findViewById(R.id.editEmail)
-        editPhone = view.findViewById(R.id.editPhone)
-
-        val bthSave = view.findViewById<Button>(R.id.save_btn)
-        val viewSwitcher = view.findViewById<ViewSwitcher>(R.id.switcherEdit)
         var changeProfileStatus = false
 
         setValidationToEdit()
 
-        bthSave.setOnClickListener {
+        btnSave.setOnClickListener {
             if (!changeProfileStatus) {
                 setUserEdit(manager.getCurrentUser())
-                bthSave.text = "Save"
+                btnSave.text = "Save"
                 changeProfileStatus = true
             }
             else {
-                val newUser = getUserChange()
-                if (newUser != manager.getCurrentUser()){
-                    manager.changeUser(getUserChange())
-                    setUserInfo(manager.getCurrentUser())
+                if (checkEditOnError()) {
+                    saveChangeUser()
+                    btnSave.text = "Change"
+                    changeProfileStatus = false
                 }
-
-                bthSave.text = "Change"
-                changeProfileStatus = false
+                else
+                    Toast.makeText(context, "Correct the mistakes", Toast.LENGTH_SHORT).show()
             }
 
-            viewSwitcher.showNext()
+            viewSwitcherChange.showNext()
         }
 
         waitUserLoad()
@@ -134,5 +133,44 @@ class UserFragment: Fragment() {
                 }
             }
         }).execute()
+    }
+
+    override fun onDestroyView() {
+        saveChangeUser()
+        super.onDestroyView()
+    }
+
+    private fun saveChangeUser(){
+        val newUser = getUserChange()
+        if (!compare(newUser, manager.getCurrentUser())) {
+
+            val dialog = AlertDialog.Builder(context!!)
+            dialog.setMessage("Data has been changed, do you want to save it?")
+            dialog.setTitle("Warning")
+            dialog.setCancelable(false)
+            dialog.setPositiveButton("Yes") { _, _ ->
+                run {
+                    manager.changeUser(newUser)
+                    setUserInfo(manager.getCurrentUser())
+                }
+            }
+
+            dialog.setNegativeButton("No") { _, _ -> }
+            dialog.show()
+        }
+    }
+
+    private fun compare(a: User, b: User?): Boolean{
+        if (b == null)
+            return false
+        if (a.email != b.email)
+            return false
+        if (a.phone != b.phone)
+            return false
+        if (a.nickname != b.nickname)
+            return false
+        if (a.name != b.name)
+            return false
+        return true
     }
 }
