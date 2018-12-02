@@ -88,6 +88,7 @@ class UserFragment: Fragment() {
                 setUserEdit(manager.getCurrentUser())
                 btnSave.text = "Save"
                 changeProfileStatus = true
+                viewSwitcherChange.showNext()
             }
             else {
                 if (checkEditOnError()) {
@@ -98,8 +99,6 @@ class UserFragment: Fragment() {
                 else
                     Toast.makeText(context, "Correct the mistakes", Toast.LENGTH_SHORT).show()
             }
-
-            viewSwitcherChange.showNext()
         }
 
         waitUserLoad()
@@ -124,6 +123,7 @@ class UserFragment: Fragment() {
             override fun onPostExecute() {
                 progressDialog.dismiss()
                 setUserInfo(manager.getCurrentUser())
+                setUserEdit(manager.getCurrentUser())
             }
 
             override fun doInBackground() {
@@ -152,12 +152,18 @@ class UserFragment: Fragment() {
                 run {
                     manager.changeUser(newUser)
                     setUserInfo(manager.getCurrentUser())
+                    viewSwitcherChange.showNext()
                 }
             }
 
-            dialog.setNegativeButton("No") { _, _ -> }
+            dialog.setNegativeButton("No") { _, _ ->
+                viewSwitcherChange.showNext()
+            }
+
             dialog.show()
         }
+        else
+            viewSwitcherChange.showNext()
     }
 
     private fun compare(a: User, b: User?): Boolean{

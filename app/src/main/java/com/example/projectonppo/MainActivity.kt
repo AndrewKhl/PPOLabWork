@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity(){
         drawerLayout = findViewById(R.id.drawerLayout)
         setupActionBarWithNavController(navController!!, drawerLayout)
 
-        DeepLinksManager.addNavigation(navController, this)
+        //DeepLinksManager.addNavigation(navController, this)
     }
 
     override fun onSupportNavigateUp(): Boolean {
