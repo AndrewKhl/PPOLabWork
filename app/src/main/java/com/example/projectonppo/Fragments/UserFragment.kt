@@ -107,6 +107,7 @@ class UserFragment: Fragment() {
     private fun waitUserLoad(){
         if (manager.getCurrentUser() != null) {
             setUserInfo(manager.getCurrentUser())
+            setUserEdit(manager.getCurrentUser())
             return
         }
 
@@ -142,8 +143,8 @@ class UserFragment: Fragment() {
 
     private fun saveChangeUser(){
         val newUser = getUserChange()
-        if (!compare(newUser, manager.getCurrentUser())) {
-
+        val oldUSer = manager.getCurrentUser() ?: return
+        if (!compare(newUser, oldUSer)) {
             val dialog = AlertDialog.Builder(context!!)
             dialog.setMessage("Data has been changed, do you want to save it?")
             dialog.setTitle("Warning")
