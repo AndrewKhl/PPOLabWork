@@ -55,26 +55,10 @@ class Manager private constructor() {
             if (task.isSuccessful) {
                 setListenerOnDatabase()
                 successSign = true
-                /*SettingsLoader(object : SettingsLoader.LoadListener {
-                    override fun onPreExecute() {}
-
-                    override fun onPostExecute() {
-
-                        setListenerOnDatabase()
-                    }
-
-                    override fun doInBackground() {
-                        while (true) {
-                            if (mAuth?.currentUser != null)
-                                break
-                        }
-                    }
-                }).execute()*/
             } else {
                 successSign = false
             }
         }
-    //    return successSign
     }
 
     fun signOut() {
@@ -115,7 +99,6 @@ class Manager private constructor() {
                 if (mAuth?.currentUser != null)
                     currentUser = dataSnapshot.child(mAuth?.currentUser!!.uid).getValue(User::class.java)
             }
-
             override fun onCancelled(databaseError: DatabaseError) {}
         })
     }

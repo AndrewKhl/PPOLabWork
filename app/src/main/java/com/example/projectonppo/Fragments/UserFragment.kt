@@ -1,7 +1,6 @@
 package com.example.projectonppo.Fragments
 
 import android.annotation.SuppressLint
-import android.app.ProgressDialog
 import android.os.Bundle
 import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
@@ -12,14 +11,12 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.ViewSwitcher
 import androidx.fragment.app.Fragment
-import com.example.projectonppo.Listeners.SettingsLoader
 import com.example.projectonppo.Manager
 import com.example.projectonppo.Models.User
 import com.example.projectonppo.R
 import com.example.projectonppo.Validations.ValidationForEmail
 import com.example.projectonppo.Validations.ValidationForPhone
 import com.example.projectonppo.Validations.ValidationForRequired
-import java.lang.Exception
 
 
 class UserFragment: Fragment() {
@@ -82,8 +79,6 @@ class UserFragment: Fragment() {
 
         setValidationToEdit()
 
-        //var newwser = User("Andrew", "Red", "red@mail.ru", "12331231", "123456")
-
         bthSave.setOnClickListener {
             if (!changeProfileStatus) {
                 setUserEdit(manager.getCurrentUser())
@@ -104,33 +99,6 @@ class UserFragment: Fragment() {
             viewSwitcher.showNext()
         }
 
-
-        if (manager.getCurrentUser() == null){
-            val progressDialog = ProgressDialog(context)
-            progressDialog.setMessage("Downloading user...")
-            progressDialog.setCancelable(false)
-
-            SettingsLoader(object : SettingsLoader.LoadListener
-            {
-                override fun onPreExecute() {
-
-                    progressDialog.show()
-                }
-
-                override fun onPostExecute() {
-                    progressDialog.dismiss()
-                    setUserInfo(manager.getCurrentUser())
-                }
-
-                override fun doInBackground() {
-                    while(true){
-                        if (manager.getCurrentUser() != null)
-                            break
-                    }
-                }
-            }).execute()
-        }
-        else
-            setUserInfo(manager.getCurrentUser())
+        setUserInfo(manager.getCurrentUser())
     }
 }

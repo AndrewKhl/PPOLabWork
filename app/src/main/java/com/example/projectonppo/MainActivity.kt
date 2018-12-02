@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
@@ -18,6 +19,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private var refToToggle: ActionBarDrawerToggle? = null
     private var refToDrawer: DrawerLayout? = null
     private var manager = Manager.dataBase
+
+    private var ref_menu: Menu? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,6 +72,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (manager.getCurrentUser() == null)
+            ref_menu?.findItem(R.id.nav_logout)?.title = "Login"
+        else
+            ref_menu?.findItem(R.id.nav_logout)?.title = "Logout"
+
         if (item.itemId == R.id.about_button){
             supportFragmentManager.beginTransaction().replace(R.id.fragments_container, AboutFragment()).commit()
             return true
@@ -82,12 +90,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.about_menu, menu)
+        ref_menu = menu
         return true
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        menu?.findItem(R.id.nav_menu)?.isVisible = false
-        return super.onPrepareOptionsMenu(menu)
     }
 }
 

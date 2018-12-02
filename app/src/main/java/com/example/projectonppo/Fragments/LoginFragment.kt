@@ -11,14 +11,10 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.projectonppo.Listeners.SettingsLoader
-import com.example.projectonppo.MainActivity
 import com.example.projectonppo.Manager
-import com.example.projectonppo.Models.User
 import com.example.projectonppo.R
 import com.example.projectonppo.Validations.ValidationForEmail
 import com.example.projectonppo.Validations.ValidationForRequired
-import com.google.android.material.navigation.NavigationView
-import java.lang.Exception
 
 class LoginFragment: Fragment() {
 
@@ -47,7 +43,6 @@ class LoginFragment: Fragment() {
                 val email = editEmail?.text.toString().trim()
                 val password = editPassword?.text.toString().trim()
 
-                var successSign:Boolean? = false
                 val progressDialog = ProgressDialog(context)
                 progressDialog.setMessage("Check data user...")
                 progressDialog.setCancelable(false)
@@ -61,8 +56,7 @@ class LoginFragment: Fragment() {
 
                     override fun onPostExecute() {
                         progressDialog.dismiss()
-                        successSign = manager.successSign
-                        if (successSign == true)
+                        if (manager.successSign == true)
                             fragmentManager!!.beginTransaction().replace(R.id.fragments_container, UserFragment()).commit()
                         else
                             Toast.makeText(context, "Invalid email or password", Toast.LENGTH_SHORT).show()
@@ -70,13 +64,14 @@ class LoginFragment: Fragment() {
 
                     override fun doInBackground() {
                         while(true){
-                            if (manager.successSign != null)
+                            if (manager.successSign == false)
+                                break
+
+                            if ((manager.successSign == true) and (manager.getCurrentUser() != null))
                                 break
                         }
                     }
                 }).execute()
-
-
             }
             else
                 Toast.makeText(context, "Correct the mistakes", Toast.LENGTH_SHORT).show()
