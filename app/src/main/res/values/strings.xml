@@ -17,4 +17,8 @@
     <string name="password">Password</string>
     <string name="Login">Login</string>
     <string name="registration">Registration</string>
+    <string name="nicknameWithoutColons">Nickname</string>
+    <string name="confirmPassword">ConfirmPassword</string>
+    <string name="add">Add</string>
+    <string name="back">BaCk</string>
 </resources>

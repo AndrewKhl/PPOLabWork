@@ -15,6 +15,7 @@ import com.example.projectonppo.Manager
 import com.example.projectonppo.R
 import com.example.projectonppo.Validations.ValidationForEmail
 import com.example.projectonppo.Validations.ValidationForRequired
+import kotlinx.android.synthetic.main.fragment_login.*
 
 class LoginFragment: Fragment() {
 
@@ -37,7 +38,7 @@ class LoginFragment: Fragment() {
         editEmail?.text = SpannableStringBuilder("red@mail.ru")
         editPassword?.text = SpannableStringBuilder("123456")
 
-        val bthLogin = view.findViewById<Button>(R.id.bthLogin)
+        //val bthLogin = view.findViewById<Button>(R.id.bthLogin)
         bthLogin.setOnClickListener {
             if (checkEditOnError()){
                 val email = editEmail?.text.toString().trim()
@@ -75,6 +76,10 @@ class LoginFragment: Fragment() {
             }
             else
                 Toast.makeText(context, "Correct the mistakes", Toast.LENGTH_SHORT).show()
+        }
+
+        btnRegistration.setOnClickListener {
+            fragmentManager!!.beginTransaction().replace(R.id.fragments_container, RegistrationFragment()).commit()
         }
     }
 

@@ -34,6 +34,7 @@ class Manager private constructor() {
     private var dbUsers: DatabaseReference
     private var currentUser: User? = null
     var successSign: Boolean? = null
+    var successRegistration: Boolean? = null
 
     init {
         val database: FirebaseDatabase = FirebaseDatabase.getInstance()
@@ -42,21 +43,29 @@ class Manager private constructor() {
     }
 
     fun registerUser(user: User) {
-        // mAuth?.createUserWithEmailAndPassword(user.email, user.password)
-        //signUser(user.email, user.password)
-        //mAuth?.signInWithEmailAndPassword(user.email, user.password)
-        //var w = mAuth?.currentUser
-        dbUsers.child(mAuth?.currentUser!!.uid).setValue(user)
+        successRegistration = null
+        mAuth?.createUserWithEmailAndPassword(user.email, user.password)?.addOnCompleteListener { task ->
+            successRegistration = if (task.isSuccessful) {
+                setListenerOnDatabase()
+                dbUsers.child(mAuth?.currentUser!!.uid).setValue(user)
+                user.password = ""
+                currentUser = user
+                signUser(user.email, user.password)
+                true
+            } else {
+                false
+            }
+        }
     }
 
     fun signUser(email: String, password: String){
         successSign = null
         mAuth?.signInWithEmailAndPassword(email, password)?.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
+            successSign = if (task.isSuccessful) {
                 setListenerOnDatabase()
-                successSign = true
+                true
             } else {
-                successSign = false
+                false
             }
         }
     }
