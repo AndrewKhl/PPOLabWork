@@ -56,7 +56,7 @@
             <Button
                 android:id="@+id/btnAddUser"
                 style="@style/ButtonOnLoginPage"
-                android:text="@string/add" />
+                android:text="@string/sign_up" />
 
             <Button
                 android:id="@+id/btnBackToLogin"
