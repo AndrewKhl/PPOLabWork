@@ -18,6 +18,7 @@ import com.example.projectonppo.Validations.ValidationForRequired
 import kotlinx.android.synthetic.main.fragment_registration.*
 
 class RegistrationFragment: Fragment() {
+    private val manager = Manager.dataBase
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_registration, container, false)
@@ -25,11 +26,8 @@ class RegistrationFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setValidationToEdit()
-
-        val manager = Manager.dataBase
-
+        
         btnAddUser.setOnClickListener {
             if (checkEditOnError())
             {

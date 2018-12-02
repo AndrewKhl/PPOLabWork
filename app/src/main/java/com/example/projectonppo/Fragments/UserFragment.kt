@@ -6,10 +6,7 @@ import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.ViewSwitcher
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.projectonppo.Databases.Manager
@@ -30,6 +27,12 @@ class UserFragment: Fragment() {
     private var manager = Manager.dataBase
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        if (!manager.userInSystem()){
+            Toast.makeText(context, "Please, enter the system", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.loginFragment)
+            return null
+        }
+
         return inflater.inflate(R.layout.fragment_user, container, false)
     }
 
@@ -68,11 +71,6 @@ class UserFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        if (!manager.userInSystem()){
-            findNavController().navigate(R.id.loginFragment)
-            return
-        }
 
         editName = view.findViewById(R.id.editName)
         editNickname = view.findViewById(R.id.editNickname)
