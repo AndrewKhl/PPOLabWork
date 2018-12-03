@@ -11,7 +11,6 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.example.projectonppo.DeepLinks.DeepLinksManager
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity(){

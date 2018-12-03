@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.projectonppo.Databases.Manager
+import com.example.projectonppo.Managers.Databases.Manager
 import com.example.projectonppo.R
 
 class Empty1Fragment: Fragment() {

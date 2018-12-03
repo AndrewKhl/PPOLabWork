@@ -1,16 +1,23 @@
 package com.example.projectonppo.Fragments
 
+import android.Manifest
 import android.app.ProgressDialog
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.projectonppo.Databases.Manager
+import com.example.projectonppo.Managers.Databases.Manager
 import com.example.projectonppo.Listeners.SettingsLoader
 import com.example.projectonppo.Models.User
 import com.example.projectonppo.R
@@ -101,6 +108,10 @@ class UserFragment: Fragment() {
             }
         }
 
+        btnChangeAvatar.setOnClickListener {
+            showDialog()
+        }
+
         waitUserLoad()
     }
 
@@ -144,7 +155,7 @@ class UserFragment: Fragment() {
     private fun saveChangeUser(){
         val newUser = getUserChange()
         val oldUSer = manager.getCurrentUser() ?: return
-        if (!compare(newUser, oldUSer)) {
+        if (!newUser.compare(oldUSer)) {
             val dialog = AlertDialog.Builder(context!!)
             dialog.setMessage("Data has been changed, do you want to save it?")
             dialog.setTitle("Warning")
@@ -167,17 +178,87 @@ class UserFragment: Fragment() {
             viewSwitcherChange.showNext()
     }
 
-    private fun compare(a: User, b: User?): Boolean{
-        if (b == null)
-            return false
-        if (a.email != b.email)
-            return false
-        if (a.phone != b.phone)
-            return false
-        if (a.nickname != b.nickname)
-            return false
-        if (a.name != b.name)
-            return false
-        return true
+    private val PERMISSIONS_REQUEST_CAMERA = 1
+    private val CAMERA_REQUEST_CODE = 2
+    private val GALLERY_REQUEST_CODE = 3
+
+    private fun showDialog() {
+        val photoMods = arrayOf("Create photo", "Select photo from gallery")
+        val builder = AlertDialog.Builder(activity!!)
+        builder.setTitle("Photo")
+
+        builder.setItems(photoMods) { _, which ->
+            when (photoMods[which]) {
+                "Create photo" -> {
+                    if (ContextCompat.checkSelfPermission(activity!!.applicationContext, Manifest.permission.CAMERA)
+                            != PackageManager.PERMISSION_GRANTED) {
+                        showPermissionDialog(Manifest.permission.CAMERA, PERMISSIONS_REQUEST_CAMERA, "Camera for photo", "Warning")
+                    } else {
+                        setPhoto()
+                    }
+                }
+                "Select photo from gallery" -> {
+                    val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                    if (galleryIntent.resolveActivity(activity!!.packageManager) != null)
+                        startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE)
+                }
+            }
+        }
+        builder.show()
     }
+
+    private fun showPermissionDialog(permission: String, permissionCode: Int,
+                                     permissiomText: String, permissionTitle: String){
+        if (ActivityCompat.shouldShowRequestPermissionRationale(activity!!, permission)) {
+            val dialog = AlertDialog.Builder(activity!!)
+            dialog.setMessage(permissiomText)
+            dialog.setTitle(permissionTitle)
+            dialog.setPositiveButton("OK") { _, _ ->
+                requestPermission(permission, permissionCode)
+            }
+            dialog.show()
+        }
+        else {
+            requestPermission(permission, permissionCode)
+        }
+    }
+
+    private fun requestPermission(permission: String, permissionCode: Int){
+        requestPermissions(arrayOf(permission), permissionCode)
+    }
+
+    private fun setPhoto(){
+        val callCameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (callCameraIntent.resolveActivity(activity!!.packageManager) != null)
+            startActivityForResult(callCameraIntent, CAMERA_REQUEST_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when(requestCode){
+            CAMERA_REQUEST_CODE -> {
+                if (data != null){
+                    avatar?.setImageBitmap(data.extras!!.get("data") as Bitmap)
+                }
+            }
+            GALLERY_REQUEST_CODE -> {
+                if (data != null) {
+                    val bitmap = MediaStore.Images.Media.getBitmap(activity!!.contentResolver, data.data)
+                    avatar?.setImageBitmap(bitmap)
+                }
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            PERMISSIONS_REQUEST_CAMERA -> {
+                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    setPhoto()
+                }
+            }
+        }
+    }
+
 }

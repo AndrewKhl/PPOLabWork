@@ -1,4 +1,4 @@
-package com.example.projectonppo.DeepLinks
+package com.example.projectonppo.Managers
 
 import android.app.Activity
 import android.net.Uri

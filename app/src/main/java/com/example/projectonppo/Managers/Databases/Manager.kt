@@ -1,4 +1,4 @@
-package com.example.projectonppo.Databases
+package com.example.projectonppo.Managers.Databases
 
 import com.example.projectonppo.Models.User
 import com.google.firebase.auth.FirebaseAuth
