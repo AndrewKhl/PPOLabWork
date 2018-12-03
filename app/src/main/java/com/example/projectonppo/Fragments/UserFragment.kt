@@ -245,6 +245,7 @@ class UserFragment: Fragment() {
             GALLERY_REQUEST_CODE -> {
                 if (data != null) {
                     val bitmap = MediaStore.Images.Media.getBitmap(activity!!.contentResolver, data.data)
+                    manager.uploadImageToFirebaseStorage(data.data)
                     avatar?.setImageBitmap(bitmap)
                 }
             }
