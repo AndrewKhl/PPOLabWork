@@ -5,6 +5,7 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.SpannableStringBuilder
@@ -239,13 +240,15 @@ class UserFragment: Fragment() {
         when(requestCode){
             CAMERA_REQUEST_CODE -> {
                 if (data != null){
-                    avatar?.setImageBitmap(data.extras!!.get("data") as Bitmap)
+                    val bitmap = data.extras!!.get("data") as Bitmap
+                    manager.uploadAvatarInDatabase(bitmap)
+                    avatar?.setImageBitmap(bitmap)
                 }
             }
             GALLERY_REQUEST_CODE -> {
                 if (data != null) {
                     val bitmap = MediaStore.Images.Media.getBitmap(activity!!.contentResolver, data.data)
-                    manager.uploadImageToFirebaseStorage(data.data)
+                    manager.uploadAvatarInDatabase(bitmap)
                     avatar?.setImageBitmap(bitmap)
                 }
             }

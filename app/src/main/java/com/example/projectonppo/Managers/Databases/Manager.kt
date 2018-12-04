@@ -19,6 +19,7 @@ import java.io.File
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import java.io.ByteArrayOutputStream
 import java.lang.Exception
 
 
@@ -105,10 +106,10 @@ class Manager private constructor() {
         })
     }
 
-    fun uploadImageToFirebaseStorage(data: Uri) {
-
-        mStorage.child(mAuth.currentUser!!.uid + ".jpg").putFile(data)
-
+    fun uploadAvatarInDatabase(bitmap: Bitmap) {
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        mStorage.child(mAuth.currentUser!!.uid + ".jpg").putBytes(baos.toByteArray())
     }
     /*
     fun downloadFromFirebaseStorage() {
