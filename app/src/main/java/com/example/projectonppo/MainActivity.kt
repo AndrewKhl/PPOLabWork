@@ -12,9 +12,12 @@ import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
+import kotlinx.android.synthetic.main.navigation_header.*
+import com.example.projectonppo.Managers.Databases.Manager
 
 class MainActivity : AppCompatActivity(){
     private var drawerLayout: DrawerLayout? = null
+    private var manager = Manager.dataBase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +40,8 @@ class MainActivity : AppCompatActivity(){
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        nicknameInMenu?.text = manager.getCurrentUser()?.nickname
+        emailInMenu?.text = manager.getCurrentUser()?.email
         return item.onNavDestinationSelected(findNavController(R.id.nav_host_fragment)) || super.onOptionsItemSelected(item)
     }
 

@@ -25,7 +25,9 @@ import com.example.projectonppo.R
 import com.example.projectonppo.Validations.ValidationForEmail
 import com.example.projectonppo.Validations.ValidationForPhone
 import com.example.projectonppo.Validations.ValidationForRequired
+import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.fragment_user.*
+import kotlinx.android.synthetic.main.navigation_header.*
 
 
 class UserFragment: Fragment() {
@@ -116,12 +118,16 @@ class UserFragment: Fragment() {
         waitUserLoad()
     }
 
+    private fun setCurrentUser(){
+        if (manager.successDownloadAvatar == true)
+            avatar?.setImageBitmap(manager.currentAvatar)
+        setUserInfo(manager.getCurrentUser())
+        setUserEdit(manager.getCurrentUser())
+    }
+
     private fun waitUserLoad(){
         if (manager.getCurrentUser() != null) {
-            if (manager.successDownloadAvatar == true)
-                avatar?.setImageBitmap(manager.currentAvatar)
-            setUserInfo(manager.getCurrentUser())
-            setUserEdit(manager.getCurrentUser())
+            setCurrentUser()
             return
         }
 
@@ -137,10 +143,7 @@ class UserFragment: Fragment() {
 
             override fun onPostExecute() {
                 progressDialog.dismiss()
-                if (manager.successDownloadAvatar == true)
-                    avatar?.setImageBitmap(manager.currentAvatar)
-                setUserInfo(manager.getCurrentUser())
-                setUserEdit(manager.getCurrentUser())
+                setCurrentUser()
             }
 
             override fun doInBackground() {
@@ -202,7 +205,7 @@ class UserFragment: Fragment() {
                 "Create photo" -> {
                     if (ContextCompat.checkSelfPermission(activity!!.applicationContext, Manifest.permission.CAMERA)
                             != PackageManager.PERMISSION_GRANTED) {
-                        showPermissionDialog(Manifest.permission.CAMERA, PERMISSIONS_REQUEST_CAMERA, "Camera for photo", "Warning")
+                        showPermissionDialog(Manifest.permission.CAMERA, PERMISSIONS_REQUEST_CAMERA, "Permission for the camera is necessary to create a photo")
                     } else {
                         setPhoto()
                     }
@@ -218,11 +221,10 @@ class UserFragment: Fragment() {
     }
 
     private fun showPermissionDialog(permission: String, permissionCode: Int,
-                                     permissiomText: String, permissionTitle: String){
+                                     permissionText: String){
         if (ActivityCompat.shouldShowRequestPermissionRationale(activity!!, permission)) {
             val dialog = AlertDialog.Builder(activity!!)
-            dialog.setMessage(permissiomText)
-            dialog.setTitle(permissionTitle)
+            dialog.setMessage(permissionText)
             dialog.setPositiveButton("OK") { _, _ ->
                 requestPermission(permission, permissionCode)
             }
