@@ -109,8 +109,8 @@ class UserFragment: Fragment() {
             }
         }
 
-        btnChangeAvatar.setOnClickListener {
-            showDialog()
+        avatar.setOnClickListener{
+            showSelectChangeDialog()
         }
 
         waitUserLoad()
@@ -118,6 +118,8 @@ class UserFragment: Fragment() {
 
     private fun waitUserLoad(){
         if (manager.getCurrentUser() != null) {
+            if (manager.successDownloadAvatar == true)
+                avatar?.setImageBitmap(manager.currentAvatar)
             setUserInfo(manager.getCurrentUser())
             setUserEdit(manager.getCurrentUser())
             return
@@ -135,13 +137,20 @@ class UserFragment: Fragment() {
 
             override fun onPostExecute() {
                 progressDialog.dismiss()
+                if (manager.successDownloadAvatar == true)
+                    avatar?.setImageBitmap(manager.currentAvatar)
                 setUserInfo(manager.getCurrentUser())
                 setUserEdit(manager.getCurrentUser())
             }
 
             override fun doInBackground() {
                 while(true){
-                    if (manager.getCurrentUser() != null)
+                    if ((manager.getCurrentUser() != null))
+                        break
+                }
+                manager.downloadAvatarFromDatabase()
+                while(true){
+                    if (manager.successDownloadAvatar != null)
                         break
                 }
             }
@@ -183,7 +192,7 @@ class UserFragment: Fragment() {
     private val CAMERA_REQUEST_CODE = 2
     private val GALLERY_REQUEST_CODE = 3
 
-    private fun showDialog() {
+    private fun showSelectChangeDialog()  {
         val photoMods = arrayOf("Create photo", "Select photo from gallery")
         val builder = AlertDialog.Builder(activity!!)
         builder.setTitle("Photo")

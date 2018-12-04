@@ -31,6 +31,8 @@ class Manager private constructor() {
     private var currentUser: User? = null
     var successSign: Boolean? = null
     var successRegistration: Boolean? = null
+    var successDownloadAvatar: Boolean? = null
+    var currentAvatar: Bitmap? = null
 
     init {
         dbUsers = FirebaseDatabase.getInstance().getReference("users")
@@ -54,6 +56,7 @@ class Manager private constructor() {
                 signUser(user.email, user.password)
                 user.password = ""
                 currentUser = user
+                successDownloadAvatar = false
                 dbUsers.child(mAuth.currentUser!!.uid).setValue(user)
                 true
             } else
@@ -75,6 +78,7 @@ class Manager private constructor() {
     fun signOut() {
         mAuth.signOut()
         currentUser = null
+        currentAvatar = null
     }
 
     fun getCurrentUser(): User? {
@@ -111,40 +115,25 @@ class Manager private constructor() {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         mStorage.child(mAuth.currentUser!!.uid + ".jpg").putBytes(baos.toByteArray())
     }
-    /*
-    fun downloadFromFirebaseStorage() {
-        val pDialog = view.getProgressDialog()
-        pDialog.setIndeterminate(false)
-        pDialog.setCancelable(false)
-        val image_storage = manager.getImageStorage()
-        if (image_storage != null) {
-            pDialog.setTitle("Downloading...")
-            pDialog.setMessage(null)
-            pDialog.show()
-            try {
-                val localFile = File.createTempFile("images", ".jpg")
 
-                image_storage!!.getFile(localFile).addOnSuccessListener(OnSuccessListener<Any> {
-                    val bmp = BitmapFactory.decodeFile(localFile.getAbsolutePath())
-                    view.setProfileImg(bmp)
-                    saveUser()
-                    pDialog.dismiss()
-                }).addOnFailureListener(OnFailureListener {
-                    pDialog.dismiss()
-                    view.onErrorMessage("Download failed. Check internet connection")
-                }).addOnProgressListener(object : OnProgressListener<FileDownloadTask.TaskSnapshot>() {
-                    fun onProgress(taskSnapshot: FileDownloadTask.TaskSnapshot) {
-                        val progress = 100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount()
+    fun downloadAvatarFromDatabase() {
+        currentAvatar = null
+        successDownloadAvatar = null
+        try {
+            val localFile = File.createTempFile("avatar", ".jpg")
 
-                        pDialog.setMessage("Downloaded " + progress.toInt() + "%...")
-                    }
-                })
-            } catch (e: IOException) {
-                e.printStackTrace()
+            mStorage.child(mAuth.currentUser!!.uid + ".jpg").getFile(localFile).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    currentAvatar = BitmapFactory.decodeFile(localFile.absolutePath)
+                    successDownloadAvatar = true
+                }
+                else
+                    successDownloadAvatar = false
             }
-
-        } else {
-            view.onErrorMessage("Upload file before downloading")
         }
-    }*/
+        catch (e: Exception) {
+            currentAvatar = null
+            successDownloadAvatar = false
+        }
+    }
 }

@@ -2,6 +2,7 @@ package com.example.projectonppo.Fragments
 
 import android.app.ProgressDialog
 import android.os.Bundle
+import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,8 +28,8 @@ class LoginFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setValidationToEdit()
 
-        //editEmailLogin?.text = SpannableStringBuilder("red@mail.ru")
-        //editPasswordLogin?.text = SpannableStringBuilder("123456")
+        editEmailLogin?.text = SpannableStringBuilder("red@mail.ru")
+        editPasswordLogin?.text = SpannableStringBuilder("123456")
 
         bthLogin.setOnClickListener {
             if (checkEditOnError()){
@@ -62,6 +63,12 @@ class LoginFragment: Fragment() {
                             if ((manager.successSign == true) and (manager.getCurrentUser() != null))
                                 break
                         }
+                        manager.downloadAvatarFromDatabase()
+                        while(true){
+                            if (manager.successDownloadAvatar != null)
+                                break
+                        }
+
                     }
                 }).execute()
             }
