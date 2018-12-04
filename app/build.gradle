@@ -46,7 +46,7 @@ android {
     defaultConfig {
         setProperty("archivesBaseName", "$applicationId-$versionName")
         applicationId "com.example.projectonppo"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 28
         versionCode getVersionCode()
         versionName getVersionName()

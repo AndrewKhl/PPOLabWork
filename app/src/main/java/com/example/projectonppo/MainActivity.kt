@@ -1,13 +1,13 @@
 package com.example.projectonppo
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.Context
 import android.content.pm.PackageManager
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
-import android.support.v7.app.AlertDialog
+import android.support.v7.app.AppCompatActivity
 import android.telephony.TelephonyManager
 import android.widget.TextView
 
@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main)
 
         val versionTextView: TextView = findViewById(R.id.ValueVersion)
@@ -58,7 +59,6 @@ class MainActivity : AppCompatActivity() {
                                             permissions: Array<String>, grantResults: IntArray) {
         when (requestCode) {
             PERMISSIONS_REQUEST_READ_PHONE_STATE -> {
-                // If request is cancelled, the result arrays are empty.
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     outputIMEI()
                 } else {
