@@ -42,7 +42,7 @@ class AboutFragment: Fragment() {
                 dialog.setMessage(resources.getString(R.string.permissionText))
                 dialog.setTitle(resources.getString(R.string.permissionTitle))
                 dialog.setCancelable(false)
-                dialog.setPositiveButton("OK") {
+                dialog.setPositiveButton(resources.getText(R.string.OK)) {
                     _, _ -> requestPermission()
                 }
                 dialog.show()

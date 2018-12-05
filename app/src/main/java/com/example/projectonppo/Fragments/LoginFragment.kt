@@ -28,8 +28,8 @@ class LoginFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setValidationToEdit()
 
-        editEmailLogin?.text = SpannableStringBuilder("red@mail.ru")
-        editPasswordLogin?.text = SpannableStringBuilder("123456")
+        //editEmailLogin?.text = SpannableStringBuilder("red@mail.ru")
+        //editPasswordLogin?.text = SpannableStringBuilder("123456")
 
         bthLogin.setOnClickListener {
             if (checkEditOnError()){
@@ -37,7 +37,7 @@ class LoginFragment: Fragment() {
                 val password = editPasswordLogin?.text.toString().trim()
 
                 val progressDialog = ProgressDialog(context)
-                progressDialog.setMessage("Check data user...")
+                progressDialog.setMessage(resources.getText(R.string.check_user_data))
                 progressDialog.setCancelable(false)
 
                 SettingsLoader(object : SettingsLoader.LoadListener
@@ -52,7 +52,7 @@ class LoginFragment: Fragment() {
                         if (manager.successSign == true)
                             findNavController().navigate(R.id.userFragment)
                         else
-                            Toast.makeText(context, "Invalid email or password", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, resources.getText(R.string.invalid_email_or_password), Toast.LENGTH_SHORT).show()
                     }
 
                     override fun doInBackground() {
@@ -73,7 +73,7 @@ class LoginFragment: Fragment() {
                 }).execute()
             }
             else
-                Toast.makeText(context, "Correct the mistakes", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, resources.getText(R.string.correct_mistakes), Toast.LENGTH_SHORT).show()
         }
 
         btnRegistration.setOnClickListener {
@@ -83,7 +83,7 @@ class LoginFragment: Fragment() {
 
     private fun setValidationToEdit(){
         editEmailLogin?.addTextChangedListener(ValidationForEmail(editEmailLogin))
-        editPasswordLogin?.addTextChangedListener(ValidationForRequired(editPasswordLogin, "Password"))
+        editPasswordLogin?.addTextChangedListener(ValidationForRequired(editPasswordLogin, resources.getText(R.string.password).toString()))
     }
 
     private fun checkEditOnError(): Boolean{

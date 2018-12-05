@@ -29,11 +29,16 @@ import kotlinx.android.synthetic.main.fragment_user.*
 
 
 class UserFragment: Fragment() {
+
+    private val PERMISSIONS_REQUEST_CAMERA = 1
+    private val CAMERA_REQUEST_CODE = 2
+    private val GALLERY_REQUEST_CODE = 3
+
     private var manager = Manager.dataBase
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (!manager.userInSystem()){
-            Toast.makeText(context, "Please, enter the system", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, resources.getText(R.string.please_enter_the_system), Toast.LENGTH_SHORT).show()
             findNavController().navigate(R.id.loginFragment)
             return null
         }
@@ -46,9 +51,9 @@ class UserFragment: Fragment() {
         val viewEmail: TextView = view!!.findViewById(R.id.viewEmail)
         val viewPhone: TextView = view!!.findViewById(R.id.viewPhone)
 
-        viewName.text = currentUser?.name ?: "No name"
-        viewNickname.text = currentUser?.nickname ?: "No nickname"
-        viewEmail.text = currentUser?.email ?: "No email"
+        viewName.text = currentUser?.name ?: ""
+        viewNickname.text = currentUser?.nickname ?: ""
+        viewEmail.text = currentUser?.email ?: ""
         viewPhone.text = currentUser?.phone ?: ""
     }
 
@@ -68,7 +73,7 @@ class UserFragment: Fragment() {
     }
 
     private fun setValidationToEdit(){
-        editNicknameChange?.addTextChangedListener(ValidationForRequired(editNicknameChange, "Nickname"))
+        editNicknameChange?.addTextChangedListener(ValidationForRequired(editNicknameChange, resources.getText(R.string.nicknameWithoutColons).toString()))
         editEmailChange?.addTextChangedListener(ValidationForEmail(editEmailChange))
         editPhoneChange?.addTextChangedListener(ValidationForPhone(editPhoneChange))
     }
@@ -94,18 +99,18 @@ class UserFragment: Fragment() {
         btnSave.setOnClickListener {
             if (!changeProfileStatus) {
                 setUserEdit(manager.getCurrentUser())
-                btnSave.text = "Save"
+                btnSave.text = resources.getText(R.string.save)
                 changeProfileStatus = true
                 viewSwitcherChange.showNext()
             }
             else {
                 if (checkEditOnError()) {
                     saveChangeUser()
-                    btnSave.text = "Change"
+                    btnSave.text = resources.getText(R.string.change)
                     changeProfileStatus = false
                 }
                 else
-                    Toast.makeText(context, "Correct the mistakes", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, resources.getText(R.string.correct_mistakes), Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -130,7 +135,7 @@ class UserFragment: Fragment() {
         }
 
         val progressDialog = ProgressDialog(context)
-        progressDialog.setMessage("Load user...")
+        progressDialog.setMessage(resources.getText(R.string.load_user))
         progressDialog.setCancelable(false)
 
         SettingsLoader(object : SettingsLoader.LoadListener
@@ -168,10 +173,10 @@ class UserFragment: Fragment() {
         val oldUSer = manager.getCurrentUser() ?: return
         if (!newUser.compare(oldUSer)) {
             val dialog = AlertDialog.Builder(context!!)
-            dialog.setMessage("Data has been changed, do you want to save it?")
-            dialog.setTitle("Warning")
+            dialog.setMessage(resources.getText(R.string.save_data_message))
+            dialog.setTitle(resources.getText(R.string.warning))
             dialog.setCancelable(false)
-            dialog.setPositiveButton("Yes") { _, _ ->
+            dialog.setPositiveButton(resources.getText(R.string.yes)) { _, _ ->
                 run {
                     manager.changeUser(newUser)
                     setUserInfo(manager.getCurrentUser())
@@ -179,7 +184,7 @@ class UserFragment: Fragment() {
                 }
             }
 
-            dialog.setNegativeButton("No") { _, _ ->
+            dialog.setNegativeButton(resources.getText(R.string.no)) { _, _ ->
                 viewSwitcherChange.showNext()
             }
 
@@ -189,26 +194,22 @@ class UserFragment: Fragment() {
             viewSwitcherChange.showNext()
     }
 
-    private val PERMISSIONS_REQUEST_CAMERA = 1
-    private val CAMERA_REQUEST_CODE = 2
-    private val GALLERY_REQUEST_CODE = 3
-
     private fun showSelectChangeDialog()  {
-        val photoMods = arrayOf("Create photo", "Select photo from gallery")
+        val photoMods = arrayOf(resources.getText(R.string.create_photo), resources.getText(R.string.select_gallery))
         val builder = AlertDialog.Builder(activity!!)
-        builder.setTitle("Photo")
+        builder.setTitle(resources.getText(R.string.photo))
 
         builder.setItems(photoMods) { _, which ->
             when (photoMods[which]) {
-                "Create photo" -> {
+                resources.getText(R.string.create_photo) -> {
                     if (ContextCompat.checkSelfPermission(activity!!.applicationContext, Manifest.permission.CAMERA)
                             != PackageManager.PERMISSION_GRANTED) {
-                        showPermissionDialog(Manifest.permission.CAMERA, PERMISSIONS_REQUEST_CAMERA, "Permission for the camera is necessary to create a photo")
+                        showPermissionDialog(Manifest.permission.CAMERA, PERMISSIONS_REQUEST_CAMERA, resources.getText(R.string.camera_permission).toString())
                     } else {
                         setPhoto()
                     }
                 }
-                "Select photo from gallery" -> {
+                resources.getText(R.string.select_gallery) -> {
                     val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
                     if (galleryIntent.resolveActivity(activity!!.packageManager) != null)
                         startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE)
@@ -223,7 +224,7 @@ class UserFragment: Fragment() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(activity!!, permission)) {
             val dialog = AlertDialog.Builder(activity!!)
             dialog.setMessage(permissionText)
-            dialog.setPositiveButton("OK") { _, _ ->
+            dialog.setPositiveButton(resources.getText(R.string.OK)) { _, _ ->
                 requestPermission(permission, permissionCode)
             }
             dialog.show()

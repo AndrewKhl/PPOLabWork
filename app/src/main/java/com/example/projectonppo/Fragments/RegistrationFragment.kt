@@ -37,7 +37,7 @@ class RegistrationFragment: Fragment() {
                 val confPassword = editConfPasswordRegistration.text.toString().trim()
 
                 if (password != confPassword) {
-                    Toast.makeText(context, "Passwords must be equal", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, resources.getText(R.string.equals_password), Toast.LENGTH_SHORT).show()
                     editPasswordRegistration.text.clear()
                     editConfPasswordRegistration.text.clear()
                 }
@@ -45,7 +45,7 @@ class RegistrationFragment: Fragment() {
                 {
                     val newUser = User(email = email, nickname = nickname, password = password)
                     val progressDialog = ProgressDialog(context)
-                    progressDialog.setMessage("Registration user...")
+                    progressDialog.setMessage(resources.getText(R.string.registration_user))
                     progressDialog.setCancelable(false)
 
                     SettingsLoader(object : SettingsLoader.LoadListener
@@ -60,7 +60,7 @@ class RegistrationFragment: Fragment() {
                             if (manager.successRegistration == true)
                                 findNavController().navigate(R.id.userFragment)
                             else
-                                Toast.makeText(context, "Email is already taken, please choose another one", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, resources.getText(R.string.taken_email), Toast.LENGTH_SHORT).show()
                         }
 
                         override fun doInBackground() {
@@ -76,7 +76,7 @@ class RegistrationFragment: Fragment() {
                 }
             }
             else
-                Toast.makeText(context, "Fill in the fields correctly", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, resources.getText(R.string.fill_correctly_fields), Toast.LENGTH_SHORT).show()
         }
 
         btnBackToLogin.setOnClickListener {
@@ -86,7 +86,7 @@ class RegistrationFragment: Fragment() {
 
     private fun setValidationToEdit(){
         editEmailRegistration.addTextChangedListener(ValidationForEmail(editEmailRegistration))
-        editNicknameRegistration.addTextChangedListener(ValidationForRequired(editNicknameRegistration, "Nickname"))
+        editNicknameRegistration.addTextChangedListener(ValidationForRequired(editNicknameRegistration, resources.getText(R.string.nicknameWithoutColons).toString()))
         editPasswordRegistration.addTextChangedListener(ValidationForPassword(editPasswordRegistration))
         editConfPasswordRegistration.addTextChangedListener(ValidationForPassword(editPasswordRegistration))
     }

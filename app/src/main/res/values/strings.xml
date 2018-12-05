@@ -27,4 +27,23 @@
     <string name="news">News</string>
     <string name="logout">Logout</string>
     <string name="sign_in">Sign In</string>
+    <string name="please_enter_the_system">Please, enter the system</string>
+    <string name="check_user_data">Check data user…</string>
+    <string name="invalid_email_or_password">Invalid email or password</string>
+    <string name="correct_mistakes">Correct the mistakes</string>
+    <string name="fill_correctly_fields">Fill in the fields correctly</string>
+    <string name="taken_email">Email is already taken, please choose another one</string>
+    <string name="registration_user">Registration user…</string>
+    <string name="equals_password">Passwords must be equal</string>
+    <string name="OK">OK</string>
+    <string name="select_gallery">Select photo from gallery</string>
+    <string name="camera_permission">Permission for the camera is necessary to create a photo</string>
+    <string name="create_photo">Create photo</string>
+    <string name="photo">Photo</string>
+    <string name="load_user">Load user…</string>
+    <string name="save_data_message">Data has been changed, do you want to save it?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="warning">Warning</string>
+    <string name="save">Save</string>
 </resources>

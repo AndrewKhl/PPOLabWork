@@ -15,7 +15,7 @@ class Empty1Fragment: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (!manager.userInSystem()){
-            Toast.makeText(context, "Please, enter the system", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, resources.getText(R.string.please_enter_the_system), Toast.LENGTH_SHORT).show()
             findNavController().navigate(R.id.loginFragment)
             return null
         }
