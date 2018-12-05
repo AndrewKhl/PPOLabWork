@@ -5,29 +5,27 @@ import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.projectonppo.Managers.Databases.Manager
 import com.example.projectonppo.Listeners.SettingsLoader
+import com.example.projectonppo.Managers.Databases.Manager
 import com.example.projectonppo.Models.User
 import com.example.projectonppo.R
 import com.example.projectonppo.Validations.ValidationForEmail
 import com.example.projectonppo.Validations.ValidationForPhone
 import com.example.projectonppo.Validations.ValidationForRequired
-import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.fragment_user.*
-import kotlinx.android.synthetic.main.navigation_header.*
 
 
 class UserFragment: Fragment() {
