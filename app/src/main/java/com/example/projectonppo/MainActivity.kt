@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun outputIMEI(){
+    private fun outputIMEI(){
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
                 != PackageManager.PERMISSION_GRANTED)
             return
