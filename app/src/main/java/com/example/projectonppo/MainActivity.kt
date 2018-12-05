@@ -17,7 +17,7 @@ import com.example.projectonppo.Managers.Databases.Manager
 
 class MainActivity : AppCompatActivity(){
     private var drawerLayout: DrawerLayout? = null
-    private var manager = Manager.dataBase
+    //private var manager = Manager.dataBase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,8 +40,8 @@ class MainActivity : AppCompatActivity(){
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        nicknameInMenu?.text = manager.getCurrentUser()?.nickname
-        emailInMenu?.text = manager.getCurrentUser()?.email
+        //nicknameInMenu?.text = manager.getCurrentUser()?.nickname
+        //emailInMenu?.text = manager.getCurrentUser()?.email
         return item.onNavDestinationSelected(findNavController(R.id.nav_host_fragment)) || super.onOptionsItemSelected(item)
     }
 
