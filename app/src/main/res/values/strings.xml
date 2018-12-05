@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">ProjectOnPPO</string>
     <string name="IMEI">IMEI: </string>
-    <string name="Version">Version: </string>
+    <string name="version">Version: </string>
     <string name="permissionText">The app needs a permission to access your phone functions, because the app has to show you your device IMEI</string>
     <string name="permissionTitle">Explanation</string>
     <string name="noPermission">No permission</string>
