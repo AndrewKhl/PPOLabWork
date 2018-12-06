@@ -72,7 +72,7 @@ android {
 
     flavorDimensions "version"
     productFlavors {
-        ready {
+        production {
             dimension "version"
             signingConfig signingConfigs.config
             manifestPlaceholders.screenOrientation = "portrait"

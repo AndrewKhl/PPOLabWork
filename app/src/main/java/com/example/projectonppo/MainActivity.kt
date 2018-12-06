@@ -10,6 +10,10 @@ import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatActivity
 import android.telephony.TelephonyManager
 import android.widget.TextView
+import android.widget.Toast
+import com.example.projectonppo.MessageView
+
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,13 +22,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_main)
 
         val versionTextView: TextView = findViewById(R.id.ValueVersion)
         versionTextView.text = BuildConfig.VERSION_NAME
 
         imeiTextView = findViewById(R.id.ValueIMEI)
+        val message = MessageView(this)
+        message.show()
         getDeviceIMEI()
     }
 

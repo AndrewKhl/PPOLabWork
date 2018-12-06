@@ -37,5 +37,10 @@
         android:layout_toEndOf="@id/CaptionVersion"
         android:layout_marginTop="20dp"
         android:id="@+id/ValueVersion"/>
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/flavor_name"
+        android:text="@string/flavors_name"/>
 </RelativeLayout>
