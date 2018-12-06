@@ -1,6 +1,7 @@
 package com.example.projectonppo
 
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -12,8 +13,6 @@ import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.navigation_header.*
-import com.example.projectonppo.Managers.Databases.Manager
 
 class MainActivity : AppCompatActivity(){
     private var drawerLayout: DrawerLayout? = null
@@ -32,6 +31,7 @@ class MainActivity : AppCompatActivity(){
         drawerLayout = findViewById(R.id.drawerLayout)
         setupActionBarWithNavController(navController!!, drawerLayout)
 
+        //adb shell am start -W -a android.intent.action.VIEW -d "sdapp://by.myapp/page/2"
         //DeepLinksManager.addNavigation(navController, this)
     }
 
