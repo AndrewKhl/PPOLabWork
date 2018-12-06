@@ -2,6 +2,7 @@ package com.example.projectonppo.Fragments
 
 import android.Manifest
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -11,6 +12,7 @@ import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -42,6 +44,7 @@ class UserFragment: Fragment() {
             findNavController().navigate(R.id.loginFragment)
             return null
         }
+        hiddenKeyboard()
         return inflater.inflate(R.layout.fragment_user, container, false)
     }
 
@@ -112,6 +115,7 @@ class UserFragment: Fragment() {
                 else
                     Toast.makeText(context, resources.getText(R.string.correct_mistakes), Toast.LENGTH_SHORT).show()
             }
+            hiddenKeyboard()
         }
 
         avatar.setOnClickListener{
@@ -166,6 +170,11 @@ class UserFragment: Fragment() {
     override fun onDestroyView() {
         saveChangeUser(true)
         super.onDestroyView()
+    }
+
+    private fun hiddenKeyboard(){
+        val inputManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
     }
 
     private fun saveChangeUser(destroyView: Boolean = false){
