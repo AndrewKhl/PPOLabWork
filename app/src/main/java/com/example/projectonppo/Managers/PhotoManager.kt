@@ -14,14 +14,5 @@ import androidx.core.content.ContextCompat
 import com.example.projectonppo.R
 
 class PhotoManager constructor(var view: View, var activity: Activity){
-    /*
 
-    }
-
-
-
-
-
-
-    */
 }

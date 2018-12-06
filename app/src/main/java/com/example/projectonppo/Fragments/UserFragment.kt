@@ -164,11 +164,11 @@ class UserFragment: Fragment() {
     }
 
     override fun onDestroyView() {
-        saveChangeUser()
+        saveChangeUser(true)
         super.onDestroyView()
     }
 
-    private fun saveChangeUser(){
+    private fun saveChangeUser(destroyView: Boolean = false){
         val newUser = getUserChange()
         val oldUSer = manager.getCurrentUser() ?: return
         if (!newUser.compare(oldUSer)) {
@@ -179,19 +179,23 @@ class UserFragment: Fragment() {
             dialog.setPositiveButton(resources.getText(R.string.yes)) { _, _ ->
                 run {
                     manager.changeUser(newUser)
-                    setUserInfo(manager.getCurrentUser())
-                    viewSwitcherChange.showNext()
+                    if (!destroyView) {
+                        setUserInfo(manager.getCurrentUser())
+                        viewSwitcherChange.showNext()
+                    }
                 }
             }
 
             dialog.setNegativeButton(resources.getText(R.string.no)) { _, _ ->
-                viewSwitcherChange.showNext()
+                if (!destroyView)
+                    viewSwitcherChange.showNext()
             }
 
             dialog.show()
         }
         else
-            viewSwitcherChange.showNext()
+            if (!destroyView)
+                viewSwitcherChange.showNext()
     }
 
     private fun showSelectChangeDialog()  {

@@ -25,9 +25,9 @@ import java.lang.Exception
 
 class Manager private constructor() {
 
-    private var mAuth: FirebaseAuth
-    private var dbUsers: DatabaseReference
-    private var mStorage: StorageReference
+    private var mAuth: FirebaseAuth = FirebaseAuth.getInstance()
+    private var dbUsers: DatabaseReference = FirebaseDatabase.getInstance().getReference("users")
+    private var mStorage: StorageReference = FirebaseStorage.getInstance().getReference("avatars")
     private var currentUser: User? = null
     var successSign: Boolean? = null
     var successRegistration: Boolean? = null
@@ -35,9 +35,6 @@ class Manager private constructor() {
     var currentAvatar: Bitmap? = null
 
     init {
-        dbUsers = FirebaseDatabase.getInstance().getReference("users")
-        mStorage = FirebaseStorage.getInstance().getReference("avatars")
-        mAuth = FirebaseAuth.getInstance()
         setListenerOnDatabase()
     }
 
