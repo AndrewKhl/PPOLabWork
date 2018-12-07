@@ -49,22 +49,17 @@ class UserFragment: Fragment() {
     }
 
     private fun setUserInfo(currentUser: User?){
-        val viewName: TextView = view!!.findViewById(R.id.viewName)
-        val viewNickname: TextView = view!!.findViewById(R.id.viewNickname)
-        val viewEmail: TextView = view!!.findViewById(R.id.viewEmail)
-        val viewPhone: TextView = view!!.findViewById(R.id.viewPhone)
-
-        viewName.text = currentUser?.name ?: ""
-        viewNickname.text = currentUser?.nickname ?: ""
-        viewEmail.text = currentUser?.email ?: ""
-        viewPhone.text = currentUser?.phone ?: ""
+        viewNameUser.text = currentUser?.name ?: ""
+        viewNicknameUser.text = currentUser?.nickname ?: ""
+        viewEmailUser.text = currentUser?.email ?: ""
+        viewPhoneUser.text = currentUser?.phone ?: ""
     }
 
     private fun setUserEdit(currentUser: User?){
-        editNameChange?.text = SpannableStringBuilder(currentUser?.name)
-        editNicknameChange?.text = SpannableStringBuilder(currentUser?.nickname)
-        editEmailChange?.text = SpannableStringBuilder(currentUser?.email)
-        editPhoneChange?.text = SpannableStringBuilder(currentUser?.phone)
+        editNameChange.setText(currentUser?.name)
+        editNicknameChange.setText(currentUser?.nickname)
+        editEmailChange.setText(currentUser?.email)
+        editPhoneChange.setText(currentUser?.phone)
     }
 
     private fun getUserChange(): User {
@@ -76,9 +71,9 @@ class UserFragment: Fragment() {
     }
 
     private fun setValidationToEdit(){
-        editNicknameChange?.addTextChangedListener(ValidationForRequired(editNicknameChange, resources.getText(R.string.nicknameWithoutColons).toString()))
-        editEmailChange?.addTextChangedListener(ValidationForEmail(editEmailChange))
-        editPhoneChange?.addTextChangedListener(ValidationForPhone(editPhoneChange))
+        editNicknameChange.addTextChangedListener(ValidationForRequired(editNicknameChange, resources.getText(R.string.nicknameWithoutColons).toString()))
+        editEmailChange.addTextChangedListener(ValidationForEmail(editEmailChange))
+        editPhoneChange.addTextChangedListener(ValidationForPhone(editPhoneChange))
     }
 
     private fun checkEditOnError(): Boolean{
@@ -119,7 +114,7 @@ class UserFragment: Fragment() {
         }
 
         avatar.setOnClickListener{
-            showSelectChangeDialog()
+            showSelectChangeAvatarDialog()
         }
 
         waitUserLoad()
@@ -127,7 +122,7 @@ class UserFragment: Fragment() {
 
     private fun setCurrentUser(){
         if (manager.successDownloadAvatar == true)
-            avatar?.setImageBitmap(manager.currentAvatar)
+            avatar.setImageBitmap(manager.currentAvatar)
         setUserInfo(manager.getCurrentUser())
         setUserEdit(manager.getCurrentUser())
     }
@@ -178,16 +173,16 @@ class UserFragment: Fragment() {
     }
 
     private fun saveChangeUser(destroyView: Boolean = false){
-        val newUser = getUserChange()
-        val oldUSer = manager.getCurrentUser() ?: return
-        if (!newUser.compare(oldUSer)) {
+        val newDataUser = getUserChange()
+        val oldDataUSer = manager.getCurrentUser() ?: return
+        if (!newDataUser.compare(oldDataUSer)) {
             val dialog = AlertDialog.Builder(context!!)
             dialog.setMessage(resources.getText(R.string.save_data_message))
             dialog.setTitle(resources.getText(R.string.warning))
             dialog.setCancelable(false)
             dialog.setPositiveButton(resources.getText(R.string.yes)) { _, _ ->
                 run {
-                    manager.changeUser(newUser)
+                    manager.changeUser(newDataUser)
                     if (!destroyView) {
                         setUserInfo(manager.getCurrentUser())
                         viewSwitcherChange.showNext()
@@ -207,7 +202,7 @@ class UserFragment: Fragment() {
                 viewSwitcherChange.showNext()
     }
 
-    private fun showSelectChangeDialog()  {
+    private fun showSelectChangeAvatarDialog()  {
         val photoMods = arrayOf(resources.getText(R.string.create_photo), resources.getText(R.string.select_gallery))
         val builder = AlertDialog.Builder(activity!!)
         builder.setTitle(resources.getText(R.string.photo))
@@ -219,7 +214,7 @@ class UserFragment: Fragment() {
                             != PackageManager.PERMISSION_GRANTED) {
                         showPermissionDialog(Manifest.permission.CAMERA, PERMISSIONS_REQUEST_CAMERA, resources.getText(R.string.camera_permission).toString())
                     } else {
-                        setPhoto()
+                        setAvatar()
                     }
                 }
                 resources.getText(R.string.select_gallery) -> {
@@ -238,20 +233,16 @@ class UserFragment: Fragment() {
             val dialog = AlertDialog.Builder(activity!!)
             dialog.setMessage(permissionText)
             dialog.setPositiveButton(resources.getText(R.string.OK)) { _, _ ->
-                requestPermission(permission, permissionCode)
+                requestPermissions(arrayOf(permission), permissionCode)
             }
             dialog.show()
         }
         else {
-            requestPermission(permission, permissionCode)
+            requestPermissions(arrayOf(permission), permissionCode)
         }
     }
 
-    private fun requestPermission(permission: String, permissionCode: Int){
-        requestPermissions(arrayOf(permission), permissionCode)
-    }
-
-    private fun setPhoto(){
+    private fun setAvatar(){
         val callCameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (callCameraIntent.resolveActivity(activity!!.packageManager) != null)
             startActivityForResult(callCameraIntent, CAMERA_REQUEST_CODE)
@@ -282,7 +273,7 @@ class UserFragment: Fragment() {
         when (requestCode) {
             PERMISSIONS_REQUEST_CAMERA -> {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    setPhoto()
+                    setAvatar()
                 }
             }
         }

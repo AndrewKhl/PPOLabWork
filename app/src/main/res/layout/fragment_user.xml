@@ -62,19 +62,19 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/viewName"
+                    android:id="@+id/viewNameUser"
                     style="@style/TextInSwitchStyle" />
 
                 <TextView
-                    android:id="@+id/viewNickname"
+                    android:id="@+id/viewNicknameUser"
                     style="@style/TextInSwitchStyle" />
 
                 <TextView
-                    android:id="@+id/viewEmail"
+                    android:id="@+id/viewEmailUser"
                     style="@style/TextInSwitchStyle" />
 
                 <TextView
-                    android:id="@+id/viewPhone"
+                    android:id="@+id/viewPhoneUser"
                     style="@style/TextInSwitchStyle" />
             </LinearLayout>
 

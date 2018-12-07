@@ -108,9 +108,10 @@ class Manager private constructor() {
     }
 
     fun uploadAvatarInDatabase(bitmap: Bitmap) {
-        val baos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-        mStorage.child(mAuth.currentUser!!.uid + ".jpg").putBytes(baos.toByteArray())
+        val byteStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteStream)
+        mStorage.child(mAuth.currentUser!!.uid + ".jpg").putBytes(byteStream.toByteArray())
+        currentAvatar = bitmap
     }
 
     fun downloadAvatarFromDatabase() {

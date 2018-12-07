@@ -9,25 +9,23 @@
         tools:layout="@layout/fragment_user"
         android:id="@+id/userFragment"
         android:name="com.example.projectonppo.Fragments.UserFragment"
-        android:label="UserFragment" />
+        android:label="Account" />
     <fragment
         tools:layout="@layout/fragment_registration"
         android:id="@+id/registrationFragment"
-        android:name="com.example.projectonppo.Fragments.RegistrationFragment"
-        android:label="RegistrationFragment" />
+        android:name="com.example.projectonppo.Fragments.RegistrationFragment" />
     <fragment
         tools:layout="@layout/fragment_login"
         android:id="@+id/loginFragment"
-        android:name="com.example.projectonppo.Fragments.LoginFragment"
-        android:label="LoginFragment" />
+        android:name="com.example.projectonppo.Fragments.LoginFragment"/>
     <fragment
-        tools:layout="@layout/fragment_empty1"
+        tools:layout="@layout/fragment_news"
         android:id="@+id/empty1Fragment"
-        android:name="com.example.projectonppo.Fragments.Empty1Fragment"
-        android:label="Empty1Fragment" />
+        android:name="com.example.projectonppo.Fragments.NewsFragment"
+        android:label="News" />
     <fragment
         tools:layout="@layout/fragment_about"
         android:id="@+id/aboutFragment"
         android:name="com.example.projectonppo.Fragments.AboutFragment"
-        android:label="AboutFragment" />
+        android:label="About" />
 </navigation>

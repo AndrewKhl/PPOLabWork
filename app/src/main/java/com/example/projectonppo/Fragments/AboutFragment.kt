@@ -15,10 +15,10 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.projectonppo.BuildConfig
 import com.example.projectonppo.R
+import kotlinx.android.synthetic.main.fragment_about.*
 
 class AboutFragment: Fragment() {
     private val PERMISSIONS_REQUEST_READ_PHONE_STATE: Int = 1
-    private var imeiTextView: TextView? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_about, container, false)
@@ -26,10 +26,7 @@ class AboutFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val versionTextView: TextView? = view.findViewById(R.id.ValueVersion)
         versionTextView?.text = BuildConfig.VERSION_NAME
-
-        imeiTextView = view.findViewById(R.id.ValueIMEI)
         getDeviceIMEI()
     }
 
@@ -51,7 +48,14 @@ class AboutFragment: Fragment() {
                 requestPermission()
         }
         else
-            outputIMEI()
+            outputDeviceIMEI()
+    }
+
+    private fun outputDeviceIMEI(){
+        if (ActivityCompat.checkSelfPermission(context!!, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED)
+            return
+        val telManager = activity!!.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+        imeiTextView?.text = telManager.deviceId
     }
 
     private fun requestPermission(){
@@ -65,19 +69,11 @@ class AboutFragment: Fragment() {
         when (requestCode) {
             PERMISSIONS_REQUEST_READ_PHONE_STATE -> {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED))
-                    outputIMEI()
+                    outputDeviceIMEI()
                 else
                     imeiTextView?.text = resources.getString(R.string.noPermission)
-
                 return
             }
         }
-    }
-
-    private fun outputIMEI(){
-        if (ActivityCompat.checkSelfPermission(context!!, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED)
-            return
-        val telManager = activity!!.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-        imeiTextView?.text = telManager.deviceId
     }
 }

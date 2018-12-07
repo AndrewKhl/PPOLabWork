@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.projectonppo.Managers.Databases.Manager
 import com.example.projectonppo.R
 
-class Empty1Fragment: Fragment() {
+class NewsFragment: Fragment() {
     private val manager = Manager.dataBase
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -19,7 +19,7 @@ class Empty1Fragment: Fragment() {
             findNavController().navigate(R.id.loginFragment)
             return null
         }
-        return inflater.inflate(R.layout.fragment_empty1, container, false)
+        return inflater.inflate(R.layout.fragment_news, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

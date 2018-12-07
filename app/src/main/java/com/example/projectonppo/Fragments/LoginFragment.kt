@@ -28,8 +28,8 @@ class LoginFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setValidationToEdit()
 
-        //editEmailLogin?.text = SpannableStringBuilder("red@mail.ru")
-        //editPasswordLogin?.text = SpannableStringBuilder("123456")
+        //editEmailLogin.setText("red@mail.ru")
+        //editPasswordLogin.setText("123456")
 
         bthLogin.setOnClickListener {
             if (checkEditOnError()){
