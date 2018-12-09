@@ -1,4 +1,4 @@
-package com.example.projectonppo.Validations
+package com.example.projectonppo.validations
 
 import android.text.Editable
 import android.text.TextWatcher

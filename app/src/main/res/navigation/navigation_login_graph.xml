@@ -8,14 +8,14 @@
     <fragment
         tools:layout="@layout/fragment_about"
         android:id="@+id/aboutFragment"
-        android:name="com.example.projectonppo.Fragments.AboutFragment"
+        android:name="com.example.projectonppo.fragments.AboutFragment"
         android:label="About" />
     <fragment
         tools:layout="@layout/fragment_registration"
         android:id="@+id/registrationFragment"
-        android:name="com.example.projectonppo.Fragments.RegistrationFragment"/>
+        android:name="com.example.projectonppo.fragments.RegistrationFragment"/>
     <fragment
         tools:layout="@layout/fragment_login"
         android:id="@+id/loginFragment"
-        android:name="com.example.projectonppo.Fragments.LoginFragment" />
+        android:name="com.example.projectonppo.fragments.LoginFragment" />
 </navigation>

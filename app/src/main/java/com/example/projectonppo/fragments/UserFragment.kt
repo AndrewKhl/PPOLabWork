@@ -1,4 +1,4 @@
-package com.example.projectonppo.Fragments
+package com.example.projectonppo.fragments
 
 import android.Manifest
 import android.app.ProgressDialog
@@ -8,26 +8,25 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
-import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import com.example.projectonppo.Listeners.SettingsLoader
+import com.example.projectonppo.listeners.SettingsLoader
 import com.example.projectonppo.LoginActivity
-import com.example.projectonppo.Managers.Databases.Manager
-import com.example.projectonppo.Models.User
+import com.example.projectonppo.managers.databases.Manager
+import com.example.projectonppo.models.User
 import com.example.projectonppo.R
-import com.example.projectonppo.Validations.ValidationForEmail
-import com.example.projectonppo.Validations.ValidationForPhone
-import com.example.projectonppo.Validations.ValidationForRequired
+import com.example.projectonppo.validations.ValidationForEmail
+import com.example.projectonppo.validations.ValidationForPhone
+import com.example.projectonppo.validations.ValidationForRequired
+import com.example.projectonppo.databinding.FragmentUserBinding
 import kotlinx.android.synthetic.main.fragment_user.*
 
 
@@ -38,6 +37,7 @@ class UserFragment: Fragment() {
 
     private var manager = Manager.dataBase
     private var changeProfileStatus = false
+    private var binding: FragmentUserBinding? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (!manager.userInSystem()){
@@ -45,30 +45,10 @@ class UserFragment: Fragment() {
             activity?.finish()
             return null
         }
+
         hiddenKeyboard()
-        return inflater.inflate(R.layout.fragment_user, container, false)
-    }
-
-    private fun setUserInfo(currentUser: User?){
-        viewNameUser.text = currentUser?.name ?: ""
-        viewNicknameUser.text = currentUser?.nickname ?: ""
-        viewEmailUser.text = currentUser?.email ?: ""
-        viewPhoneUser.text = currentUser?.phone ?: ""
-    }
-
-    private fun setUserEdit(currentUser: User?){
-        editNameChange.setText(currentUser?.name)
-        editNicknameChange.setText(currentUser?.nickname)
-        editEmailChange.setText(currentUser?.email)
-        editPhoneChange.setText(currentUser?.phone)
-    }
-
-    private fun getUserChange(): User {
-        val name = editNameChange?.text.toString().trim()
-        val nickname = editNicknameChange?.text.toString().trim()
-        val email = editEmailChange?.text.toString().trim()
-        val phone = editPhoneChange?.text.toString().trim()
-        return User(name, nickname, email, phone)
+        binding = DataBindingUtil.inflate(inflater ,R.layout.fragment_user,container , false)
+        return binding?.root
     }
 
     private fun setValidationToEdit(){
@@ -96,16 +76,15 @@ class UserFragment: Fragment() {
 
         btnSave.setOnClickListener {
             if (!changeProfileStatus) {
-                setUserEdit(manager.getCurrentUser())
                 btnSave.text = resources.getText(R.string.save)
                 changeProfileStatus = true
                 viewSwitcherChange.showNext()
             }
             else {
                 if (checkEditOnError()) {
-                    saveChangeUser()
                     btnSave.text = resources.getText(R.string.change)
                     changeProfileStatus = false
+                    saveChangeUser()
                 }
                 else
                     Toast.makeText(context, resources.getText(R.string.correct_mistakes), Toast.LENGTH_SHORT).show()
@@ -123,8 +102,13 @@ class UserFragment: Fragment() {
     private fun setCurrentUser(){
         if (manager.successDownloadAvatar == true)
             avatar.setImageBitmap(manager.currentAvatar)
-        setUserInfo(manager.getCurrentUser())
-        setUserEdit(manager.getCurrentUser())
+            val currentUser = manager.getCurrentUser()
+            binding?.user = User(
+                    name = currentUser?.name!!,
+                    nickname = currentUser.nickname,
+                    email = currentUser.email,
+                    phone = currentUser.phone
+            )
     }
 
     private fun waitUserLoad(){
@@ -173,26 +157,27 @@ class UserFragment: Fragment() {
     }
 
     private fun saveChangeUser(destroyView: Boolean = false){
-        val newDataUser = getUserChange()
-        val oldDataUSer = manager.getCurrentUser() ?: return
-        if (!newDataUser.compare(oldDataUSer)) {
+        val oldDataUser = manager.getCurrentUser() ?: return
+        if (!oldDataUser.compare(binding?.user)) {
             val dialog = AlertDialog.Builder(context!!)
             dialog.setMessage(resources.getText(R.string.save_data_message))
             dialog.setTitle(resources.getText(R.string.warning))
             dialog.setCancelable(false)
             dialog.setPositiveButton(resources.getText(R.string.yes)) { _, _ ->
                 run {
-                    manager.changeUser(newDataUser)
-                    if (!destroyView) {
-                        setUserInfo(manager.getCurrentUser())
+                    manager.changeUser(binding?.user)
+                    if (!destroyView){
+                        setCurrentUser()
                         viewSwitcherChange.showNext()
                     }
                 }
             }
 
             dialog.setNegativeButton(resources.getText(R.string.no)) { _, _ ->
-                if (!destroyView)
+                if (!destroyView){
+                    setCurrentUser()
                     viewSwitcherChange.showNext()
+                }
             }
 
             dialog.show()

@@ -8,6 +8,11 @@ def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
+
+    dataBinding {
+        enabled = true
+    }
+
     def getDescribeTags = { ->
         def stdout = new ByteArrayOutputStream()
         exec {

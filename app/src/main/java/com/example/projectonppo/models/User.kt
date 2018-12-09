@@ -1,7 +1,10 @@
-package com.example.projectonppo.Models
+package com.example.projectonppo.models
 
-class User constructor(var name: String = "",var nickname:String = "", var email:String = "",
-                       var phone:String = "", var password:String = ""){
+data class User constructor(var name: String = "",
+                            var nickname:String = "",
+                            var email:String = "",
+                            var phone:String = "",
+                            var password:String = ""){
 
     fun compare(b: User?): Boolean{
         if (b == null)

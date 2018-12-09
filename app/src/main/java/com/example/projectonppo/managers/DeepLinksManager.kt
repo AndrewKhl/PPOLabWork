@@ -1,4 +1,4 @@
-package com.example.projectonppo.Managers
+package com.example.projectonppo.managers
 
 import android.app.Activity
 import android.net.Uri

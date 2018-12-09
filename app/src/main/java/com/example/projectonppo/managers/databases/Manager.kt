@@ -1,22 +1,15 @@
-package com.example.projectonppo.Managers.Databases
+package com.example.projectonppo.managers.databases
 
-import com.example.projectonppo.Models.User
+import com.example.projectonppo.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ValueEventListener
-import androidx.annotation.NonNull
-import com.google.android.gms.tasks.OnFailureListener
 import android.graphics.BitmapFactory
 import android.graphics.Bitmap
-import com.google.android.gms.tasks.OnSuccessListener
-import android.app.ProgressDialog
-import android.net.Uri
-import com.google.firebase.firestore.CollectionReference
 import java.io.File
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import java.io.ByteArrayOutputStream
@@ -86,14 +79,16 @@ class Manager private constructor() {
         return mAuth.currentUser != null
     }
 
-    fun changeUser(newUserData: User) {
-        if (currentUser?.email != newUserData.email) {
-            mAuth.currentUser?.updateEmail(newUserData.email)
-        }
+    fun changeUser(newUserData: User?) {
+        if (newUserData != null){
+            if (currentUser?.email != newUserData.email) {
+                mAuth.currentUser?.updateEmail(newUserData.email)
+            }
 
-        if (currentUser != newUserData) {
-            dbUsers.child(mAuth.currentUser!!.uid).setValue(newUserData)
-            currentUser = newUserData
+            if (currentUser != newUserData) {
+                dbUsers.child(mAuth.currentUser!!.uid).setValue(newUserData)
+                currentUser = newUserData
+            }
         }
     }
 

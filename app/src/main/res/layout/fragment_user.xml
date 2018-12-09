@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="user"
+            type="com.example.projectonppo.models.User"/>
+    </data>
+<ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -63,19 +67,23 @@
 
                 <TextView
                     android:id="@+id/viewNameUser"
-                    style="@style/TextInSwitchStyle" />
+                    style="@style/TextInSwitchStyle"
+                    android:text="@={user.name}"/>
 
                 <TextView
                     android:id="@+id/viewNicknameUser"
-                    style="@style/TextInSwitchStyle" />
+                    style="@style/TextInSwitchStyle"
+                    android:text="@={user.nickname}"/>
 
                 <TextView
                     android:id="@+id/viewEmailUser"
-                    style="@style/TextInSwitchStyle" />
+                    style="@style/TextInSwitchStyle"
+                    android:text="@={user.email}"/>
 
                 <TextView
                     android:id="@+id/viewPhoneUser"
-                    style="@style/TextInSwitchStyle" />
+                    style="@style/TextInSwitchStyle"
+                    android:text="@={user.phone}"/>
             </LinearLayout>
 
             <LinearLayout
@@ -86,22 +94,26 @@
                 <EditText
                     android:id="@+id/editNameChange"
                     style="@style/TextEditStyle"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:text="@={user.name}"/>
 
                 <EditText
                     android:id="@+id/editNicknameChange"
                     style="@style/TextEditStyle"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:text="@={user.nickname}"/>
 
                 <EditText
                     android:id="@+id/editEmailChange"
                     style="@style/TextEditStyle"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="textEmailAddress"
+                    android:text="@={user.email}"/>
 
                 <EditText
                     android:id="@+id/editPhoneChange"
                     style="@style/TextEditStyle"
-                    android:inputType="phone" />
+                    android:inputType="phone"
+                    android:text="@={user.phone}"/>
             </LinearLayout>
         </ViewSwitcher>
 
@@ -118,3 +130,4 @@
             android:textColor="@color/White" />
     </RelativeLayout>
 </ScrollView>
+</layout>

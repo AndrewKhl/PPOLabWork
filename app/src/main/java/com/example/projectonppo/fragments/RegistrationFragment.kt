@@ -1,4 +1,4 @@
-package com.example.projectonppo.Fragments
+package com.example.projectonppo.fragments
 
 import android.app.ProgressDialog
 import android.content.Intent
@@ -9,14 +9,14 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.projectonppo.Listeners.SettingsLoader
+import com.example.projectonppo.listeners.SettingsLoader
 import com.example.projectonppo.MainActivity
-import com.example.projectonppo.Managers.Databases.Manager
-import com.example.projectonppo.Models.User
+import com.example.projectonppo.managers.databases.Manager
+import com.example.projectonppo.models.User
 import com.example.projectonppo.R
-import com.example.projectonppo.Validations.ValidationForEmail
-import com.example.projectonppo.Validations.ValidationForPassword
-import com.example.projectonppo.Validations.ValidationForRequired
+import com.example.projectonppo.validations.ValidationForEmail
+import com.example.projectonppo.validations.ValidationForPassword
+import com.example.projectonppo.validations.ValidationForRequired
 import kotlinx.android.synthetic.main.fragment_registration.*
 
 class RegistrationFragment: Fragment() {
