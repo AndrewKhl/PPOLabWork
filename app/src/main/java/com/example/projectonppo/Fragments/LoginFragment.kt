@@ -1,16 +1,17 @@
 package com.example.projectonppo.Fragments
 
 import android.app.ProgressDialog
+import android.content.Intent
 import android.os.Bundle
-import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.projectonppo.Managers.Databases.Manager
 import com.example.projectonppo.Listeners.SettingsLoader
+import com.example.projectonppo.MainActivity
+import com.example.projectonppo.Managers.Databases.Manager
 import com.example.projectonppo.R
 import com.example.projectonppo.Validations.ValidationForEmail
 import com.example.projectonppo.Validations.ValidationForRequired
@@ -49,8 +50,10 @@ class LoginFragment: Fragment() {
 
                     override fun onPostExecute() {
                         progressDialog.dismiss()
-                        if (manager.successSign == true)
-                            findNavController().navigate(R.id.userFragment)
+                        if (manager.successSign == true) {
+                            startActivity(Intent(context, MainActivity::class.java))
+                            activity?.finish()
+                        }
                         else
                             Toast.makeText(context, resources.getText(R.string.invalid_email_or_password), Toast.LENGTH_SHORT).show()
                     }
@@ -73,7 +76,7 @@ class LoginFragment: Fragment() {
                 }).execute()
             }
             else
-                Toast.makeText(context, resources.getText(R.string.correct_mistakes), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, resources.getText(R.string.fill_correctly_fields), Toast.LENGTH_SHORT).show()
         }
 
         btnRegistration.setOnClickListener {
@@ -87,7 +90,9 @@ class LoginFragment: Fragment() {
     }
 
     private fun checkEditOnError(): Boolean{
-        if ((editEmailLogin?.error != null) or (editPasswordLogin?.error != null))
+        if ((editEmailLogin?.error != null) || (editEmailLogin.text.isEmpty()))
+            return false
+        if ((editPasswordLogin.error != null) || (editPasswordLogin.text.isEmpty()))
             return false
         return true
     }

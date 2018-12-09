@@ -11,16 +11,8 @@
         android:name="com.example.projectonppo.Fragments.UserFragment"
         android:label="Account" />
     <fragment
-        tools:layout="@layout/fragment_registration"
-        android:id="@+id/registrationFragment"
-        android:name="com.example.projectonppo.Fragments.RegistrationFragment" />
-    <fragment
-        tools:layout="@layout/fragment_login"
-        android:id="@+id/loginFragment"
-        android:name="com.example.projectonppo.Fragments.LoginFragment"/>
-    <fragment
         tools:layout="@layout/fragment_news"
-        android:id="@+id/empty1Fragment"
+        android:id="@+id/newsFragment"
         android:name="com.example.projectonppo.Fragments.NewsFragment"
         android:label="News" />
     <fragment
@@ -28,4 +20,8 @@
         android:id="@+id/aboutFragment"
         android:name="com.example.projectonppo.Fragments.AboutFragment"
         android:label="About" />
+    <fragment
+        android:id="@+id/logoutFragment"
+        android:name="com.example.projectonppo.Fragments.LoginFragment"
+        tools:layout="@layout/fragment_login" />
 </navigation>

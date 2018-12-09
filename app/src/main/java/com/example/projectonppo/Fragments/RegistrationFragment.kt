@@ -1,6 +1,7 @@
 package com.example.projectonppo.Fragments
 
 import android.app.ProgressDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.projectonppo.Listeners.SettingsLoader
+import com.example.projectonppo.MainActivity
 import com.example.projectonppo.Managers.Databases.Manager
 import com.example.projectonppo.Models.User
 import com.example.projectonppo.R
@@ -57,8 +59,10 @@ class RegistrationFragment: Fragment() {
 
                         override fun onPostExecute() {
                             progressDialog.dismiss()
-                            if (manager.successRegistration == true)
-                                findNavController().navigate(R.id.userFragment)
+                            if (manager.successRegistration == true){
+                                startActivity(Intent(context, MainActivity::class.java))
+                                activity?.finish()
+                            }
                             else
                                 Toast.makeText(context, resources.getText(R.string.taken_email), Toast.LENGTH_SHORT).show()
                         }

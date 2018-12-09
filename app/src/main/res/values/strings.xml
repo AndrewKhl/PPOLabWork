@@ -47,4 +47,5 @@
     <string name="warning">Warning</string>
     <string name="save">Save</string>
     <string name="info">i</string>
+    <string name="sign_out">Sign out</string>
 </resources>

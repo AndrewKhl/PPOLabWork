@@ -33,6 +33,10 @@
                     android:pathPrefix="/page"/>
             </intent-filter>
         </activity>
+
+        <activity android:name=".LoginActivity"
+            android:screenOrientation="${screenOrientation}">
+        </activity>
     </application>
 
 </manifest>

@@ -21,6 +21,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.projectonppo.Listeners.SettingsLoader
+import com.example.projectonppo.LoginActivity
 import com.example.projectonppo.Managers.Databases.Manager
 import com.example.projectonppo.Models.User
 import com.example.projectonppo.R
@@ -31,7 +32,6 @@ import kotlinx.android.synthetic.main.fragment_user.*
 
 
 class UserFragment: Fragment() {
-
     private val PERMISSIONS_REQUEST_CAMERA = 1
     private val CAMERA_REQUEST_CODE = 2
     private val GALLERY_REQUEST_CODE = 3
@@ -40,8 +40,8 @@ class UserFragment: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (!manager.userInSystem()){
-            Toast.makeText(context, resources.getText(R.string.please_enter_the_system), Toast.LENGTH_SHORT).show()
-            findNavController().navigate(R.id.loginFragment)
+            startActivity(Intent(context, LoginActivity::class.java))
+            activity?.finish()
             return null
         }
         hiddenKeyboard()

@@ -1,7 +1,7 @@
 package com.example.projectonppo
 
+import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -16,7 +16,6 @@ import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity(){
     private var drawerLayout: DrawerLayout? = null
-    //private var manager = Manager.dataBase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +23,15 @@ class MainActivity : AppCompatActivity(){
 
         val host = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
         val navController = host?.findNavController()
+
+        navController?.addOnNavigatedListener { _, destination ->
+            when (destination.id){
+                R.id.logoutFragment -> {
+                    startActivity(Intent(this.applicationContext, LoginActivity::class.java))
+                    this.finish()
+                }
+            }
+        }
 
         val sideNavView = findViewById<NavigationView>(R.id.nav_menu)
         sideNavView?.setupWithNavController(navController!!)
@@ -40,8 +48,6 @@ class MainActivity : AppCompatActivity(){
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        //nicknameInMenu?.text = manager.getCurrentUser()?.nickname
-        //emailInMenu?.text = manager.getCurrentUser()?.email
         return item.onNavDestinationSelected(findNavController(R.id.nav_host_fragment)) || super.onOptionsItemSelected(item)
     }
 
