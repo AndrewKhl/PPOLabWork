@@ -37,6 +37,7 @@ class UserFragment: Fragment() {
     private val GALLERY_REQUEST_CODE = 3
 
     private var manager = Manager.dataBase
+    private var changeProfileStatus = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (!manager.userInSystem()){
@@ -90,7 +91,6 @@ class UserFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var changeProfileStatus = false
 
         setValidationToEdit()
 
@@ -203,28 +203,30 @@ class UserFragment: Fragment() {
     }
 
     private fun showSelectChangeAvatarDialog()  {
-        val photoMods = arrayOf(resources.getText(R.string.create_photo), resources.getText(R.string.select_gallery))
-        val builder = AlertDialog.Builder(activity!!)
-        builder.setTitle(resources.getText(R.string.photo))
+        if (changeProfileStatus){
+            val photoMods = arrayOf(resources.getText(R.string.create_photo), resources.getText(R.string.select_gallery))
+            val builder = AlertDialog.Builder(activity!!)
+            builder.setTitle(resources.getText(R.string.photo))
 
-        builder.setItems(photoMods) { _, which ->
-            when (photoMods[which]) {
-                resources.getText(R.string.create_photo) -> {
-                    if (ContextCompat.checkSelfPermission(activity!!.applicationContext, Manifest.permission.CAMERA)
-                            != PackageManager.PERMISSION_GRANTED) {
-                        showPermissionDialog(Manifest.permission.CAMERA, PERMISSIONS_REQUEST_CAMERA, resources.getText(R.string.camera_permission).toString())
-                    } else {
-                        setAvatar()
+            builder.setItems(photoMods) { _, which ->
+                when (photoMods[which]) {
+                    resources.getText(R.string.create_photo) -> {
+                        if (ContextCompat.checkSelfPermission(activity!!.applicationContext, Manifest.permission.CAMERA)
+                                != PackageManager.PERMISSION_GRANTED) {
+                            showPermissionDialog(Manifest.permission.CAMERA, PERMISSIONS_REQUEST_CAMERA, resources.getText(R.string.camera_permission).toString())
+                        } else {
+                            setAvatar()
+                        }
+                    }
+                    resources.getText(R.string.select_gallery) -> {
+                        val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                        if (galleryIntent.resolveActivity(activity!!.packageManager) != null)
+                            startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE)
                     }
                 }
-                resources.getText(R.string.select_gallery) -> {
-                    val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-                    if (galleryIntent.resolveActivity(activity!!.packageManager) != null)
-                        startActivityForResult(galleryIntent, GALLERY_REQUEST_CODE)
-                }
             }
+            builder.show()
         }
-        builder.show()
     }
 
     private fun showPermissionDialog(permission: String, permissionCode: Int,
