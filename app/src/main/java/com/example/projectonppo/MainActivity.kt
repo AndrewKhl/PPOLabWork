@@ -5,14 +5,12 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AppCompatActivity
 import android.telephony.TelephonyManager
 import android.widget.TextView
-import android.widget.Toast
-import com.example.projectonppo.MessageView
-
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -79,7 +77,6 @@ class MainActivity : AppCompatActivity() {
                 != PackageManager.PERMISSION_GRANTED)
             return
         val telManager = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-        val imeiTextView:TextView = findViewById(R.id.ValueIMEI)
-        imeiTextView.text = telManager.deviceId
+        ValueIMEI.text = telManager.deviceId
     }
 }
