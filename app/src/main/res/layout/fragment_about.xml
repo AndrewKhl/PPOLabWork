@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/captionIMEI"
+        style="@style/TextViewStyle"
+        android:text="@string/IMEI"/>
+
+    <TextView
+        android:id="@+id/imeiTextView"
+        style="@style/TextViewStyle"
+        android:layout_marginStart="0dp"
+        android:layout_toEndOf="@id/captionIMEI" />
+
+    <TextView
+        android:id="@+id/CaptionVersion"
+        style="@style/TextViewStyle"
+        android:layout_below="@+id/captionIMEI"
+        android:text="@string/version"/>
+
+    <TextView
+        android:id="@+id/versionTextView"
+        style="@style/TextViewStyle"
+        android:layout_marginStart="0dp"
+        android:layout_below="@+id/imeiTextView"
+        android:layout_toEndOf="@id/CaptionVersion" />
+
+</RelativeLayout>

@@ -1,82 +1,63 @@
 package com.example.projectonppo
 
-import android.Manifest
-import android.app.AlertDialog
-import android.content.Context
-import android.content.pm.PackageManager
+import android.content.Intent
 import android.os.Bundle
-import android.telephony.TelephonyManager
-import android.widget.TextView
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import kotlinx.android.synthetic.main.activity_main.*
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.onNavDestinationSelected
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.navigation.NavigationView
 
+class MainActivity : AppCompatActivity(){
+    private var drawerLayout: DrawerLayout? = null
 
-class MainActivity : AppCompatActivity() {
-
-    private val PERMISSIONS_REQUEST_READ_PHONE_STATE: Int = 1
-    private var imeiTextView: TextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val versionTextView: TextView = findViewById(R.id.ValueVersion)
-        versionTextView.text = BuildConfig.VERSION_NAME
+        val host = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
+        val navController = host?.findNavController()
 
-        imeiTextView = findViewById(R.id.ValueIMEI)
-        val message = MessageView(this)
-        message.show()
-        getDeviceIMEI()
-    }
-
-    private fun getDeviceIMEI(){
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
-                != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                            Manifest.permission.READ_PHONE_STATE)) {
-                val dialog = AlertDialog.Builder(this)
-                dialog.setMessage(resources.getString(R.string.permissionText))
-                dialog.setTitle(resources.getString(R.string.permissionTitle))
-                dialog.setCancelable(false)
-                dialog.setPositiveButton("OK") { dialogInterface, which ->
-                    requestPermission()
+        navController?.addOnNavigatedListener { _, destination ->
+            when (destination.id){
+                R.id.logoutFragment -> {
+                    startActivity(Intent(this.applicationContext, LoginActivity::class.java))
+                    this.finish()
                 }
-                dialog.show()
-            }
-            else {
-                requestPermission()
             }
         }
-        else {
-            outputIMEI()
+
+        val sideNavView = findViewById<NavigationView>(R.id.nav_menu)
+        drawerLayout = findViewById(R.id.drawerLayout)
+
+        if (navController != null) {
+            sideNavView?.setupWithNavController(navController)
+            setupActionBarWithNavController(navController, drawerLayout)
         }
-    }
-    private fun requestPermission(){
-        ActivityCompat.requestPermissions(this,
-                arrayOf(Manifest.permission.READ_PHONE_STATE),
-                PERMISSIONS_REQUEST_READ_PHONE_STATE)
-    }
-    override fun onRequestPermissionsResult(requestCode: Int,
-                                            permissions: Array<String>, grantResults: IntArray) {
-        when (requestCode) {
-            PERMISSIONS_REQUEST_READ_PHONE_STATE -> {
-                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    outputIMEI()
-                } else {
-                    imeiTextView?.text = resources.getString(R.string.noPermission)
-                }
-                return
-            }
-        }
+
+        //adb shell am start -W -a android.intent.action.VIEW -d "sdapp://by.myapp/page/2"
+        //DeepLinksManager.addNavigation(navController, this)
     }
 
-    private fun outputIMEI(){
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
-                != PackageManager.PERMISSION_GRANTED)
-            return
-        val telManager = getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-        ValueIMEI.text = telManager.deviceId
+    override fun onSupportNavigateUp(): Boolean {
+        return NavigationUI.navigateUp(drawerLayout, findNavController( R.id.nav_host_fragment))
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return item.onNavDestinationSelected(findNavController(R.id.nav_host_fragment)) || super.onOptionsItemSelected(item)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.about_menu, menu)
+        return true
     }
 }
+

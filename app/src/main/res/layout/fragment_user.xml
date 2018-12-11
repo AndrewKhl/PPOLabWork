@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="user"
+            type="com.example.projectonppo.models.User"/>
+    </data>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/avatar"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="20dp"
+            android:contentDescription="@string/fail"
+            android:src="@drawable/default_avatar" />
+
+        <LinearLayout
+            android:id="@+id/captions"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/avatar"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/TextViewStyle"
+                android:layout_gravity="end"
+                android:layout_marginTop="7dp"
+                android:text="@string/name" />
+
+            <TextView
+                style="@style/TextViewStyle"
+                android:layout_gravity="end"
+                android:text="@string/nickname" />
+
+            <TextView
+                style="@style/TextViewStyle"
+                android:layout_gravity="end"
+                android:text="@string/email" />
+
+            <TextView
+                style="@style/TextViewStyle"
+                android:layout_gravity="end"
+                android:text="@string/phone" />
+
+        </LinearLayout>
+
+        <ViewSwitcher
+            android:id="@+id/viewSwitcherChange"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/avatar"
+            android:layout_toEndOf="@id/captions">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/viewNameUser"
+                    style="@style/TextInSwitchStyle"
+                    android:text="@={user.name}"/>
+
+                <TextView
+                    android:id="@+id/viewNicknameUser"
+                    style="@style/TextInSwitchStyle"
+                    android:text="@={user.nickname}"/>
+
+                <TextView
+                    android:id="@+id/viewEmailUser"
+                    style="@style/TextInSwitchStyle"
+                    android:text="@={user.email}"/>
+
+                <TextView
+                    android:id="@+id/viewPhoneUser"
+                    style="@style/TextInSwitchStyle"
+                    android:text="@={user.phone}"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/editNameChange"
+                    style="@style/TextEditStyle"
+                    android:inputType="text"
+                    android:text="@={user.name}"/>
+
+                <EditText
+                    android:id="@+id/editNicknameChange"
+                    style="@style/TextEditStyle"
+                    android:inputType="text"
+                    android:text="@={user.nickname}"/>
+
+                <EditText
+                    android:id="@+id/editEmailChange"
+                    style="@style/TextEditStyle"
+                    android:inputType="textEmailAddress"
+                    android:text="@={user.email}"/>
+
+                <EditText
+                    android:id="@+id/editPhoneChange"
+                    style="@style/TextEditStyle"
+                    android:inputType="phone"
+                    android:text="@={user.phone}"/>
+            </LinearLayout>
+        </ViewSwitcher>
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/viewSwitcherChange"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/rounded_button"
+            android:text="@string/change"
+            android:textColor="@color/White" />
+    </RelativeLayout>
+</ScrollView>
+</layout>
