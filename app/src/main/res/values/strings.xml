@@ -48,4 +48,8 @@
     <string name="save">Save</string>
     <string name="info">i</string>
     <string name="sign_out">Sign out</string>
+    <string name="emptyURL">Enter URL</string>
+    <string name="containsURL">This URL already exists</string>
+    <string name="not_correctURL">Enter correct URL</string>
+    <string name="load_news">Load news</string>
 </resources>

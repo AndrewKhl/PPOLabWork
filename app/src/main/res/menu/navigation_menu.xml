@@ -3,7 +3,7 @@
     <item android:id="@+id/userFragment"
         android:title="@string/my_account"/>
 
-    <item android:id="@+id/newsFragment"
+    <item android:id="@+id/urlsFragment"
         android:title="@string/news"/>
 
     <item android:id="@+id/logoutFragment"

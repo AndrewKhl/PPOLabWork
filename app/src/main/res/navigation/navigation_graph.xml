@@ -24,4 +24,9 @@
         android:id="@+id/logoutFragment"
         android:name="com.example.projectonppo.fragments.LoginFragment"
         tools:layout="@layout/fragment_login" />
+    <fragment
+        android:id="@+id/urlsFragment"
+        android:name="com.example.projectonppo.fragments.UrlsFragment"
+        android:label="Urls"
+        tools:layout="@layout/fragment_urls" />
 </navigation>
