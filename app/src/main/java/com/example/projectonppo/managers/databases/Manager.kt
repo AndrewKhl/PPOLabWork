@@ -47,7 +47,7 @@ class Manager private constructor() {
                 user.password = ""
                 currentUser = user
                 successDownloadAvatar = false
-                dbUsers.child(mAuth.currentUser!!.uid).setValue(user)
+                dbUsers.child(mAuth.currentUser?.uid.toString()).setValue(user)
                 true
             } else
                 false
@@ -79,14 +79,14 @@ class Manager private constructor() {
         return mAuth.currentUser != null
     }
 
-    fun changeUser(newUserData: User?) {
+    fun updateDataUser(newUserData: User?) {
         if (newUserData != null){
             if (currentUser?.email != newUserData.email) {
                 mAuth.currentUser?.updateEmail(newUserData.email)
             }
 
             if (currentUser != newUserData) {
-                dbUsers.child(mAuth.currentUser!!.uid).setValue(newUserData)
+                dbUsers.child(mAuth.currentUser?.uid.toString()).setValue(newUserData)
                 currentUser = newUserData
             }
         }
@@ -96,7 +96,7 @@ class Manager private constructor() {
         dbUsers.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (mAuth.currentUser != null)
-                    currentUser = dataSnapshot.child(mAuth.currentUser!!.uid).getValue(User::class.java)
+                    currentUser = dataSnapshot.child(mAuth.currentUser?.uid.toString()).getValue(User::class.java)
             }
             override fun onCancelled(databaseError: DatabaseError) {}
         })
@@ -105,7 +105,7 @@ class Manager private constructor() {
     fun uploadAvatarInDatabase(bitmap: Bitmap) {
         val byteStream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteStream)
-        mStorage.child(mAuth.currentUser!!.uid + ".jpg").putBytes(byteStream.toByteArray())
+        mStorage.child(mAuth.currentUser?.uid + ".jpg").putBytes(byteStream.toByteArray())
         currentAvatar = bitmap
     }
 
@@ -115,7 +115,7 @@ class Manager private constructor() {
         try {
             val localFile = File.createTempFile("avatar", ".jpg")
 
-            mStorage.child(mAuth.currentUser!!.uid + ".jpg").getFile(localFile).addOnCompleteListener { task ->
+            mStorage.child(mAuth.currentUser?.uid + ".jpg").getFile(localFile).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     currentAvatar = BitmapFactory.decodeFile(localFile.absolutePath)
                     successDownloadAvatar = true

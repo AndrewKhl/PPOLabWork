@@ -29,6 +29,8 @@ import com.example.projectonppo.validations.ValidationForRequired
 import com.example.projectonppo.databinding.FragmentUserBinding
 import kotlinx.android.synthetic.main.fragment_user.*
 
+// убрать while true
+//!инициализация баз данных в отдельной функции
 
 class UserFragment: Fragment() {
     private val PERMISSIONS_REQUEST_CAMERA = 1
@@ -104,10 +106,10 @@ class UserFragment: Fragment() {
             avatar.setImageBitmap(manager.currentAvatar)
             val currentUser = manager.getCurrentUser()
             binding?.user = User(
-                    name = currentUser?.name!!,
-                    nickname = currentUser.nickname,
-                    email = currentUser.email,
-                    phone = currentUser.phone
+                    nickname = currentUser?.nickname.toString(),
+                    name = currentUser?.name.toString(),
+                    email = currentUser?.email.toString(),
+                    phone = currentUser?.phone.toString()
             )
     }
 
@@ -165,7 +167,7 @@ class UserFragment: Fragment() {
             dialog.setCancelable(false)
             dialog.setPositiveButton(resources.getText(R.string.yes)) { _, _ ->
                 run {
-                    manager.changeUser(binding?.user)
+                    manager.updateDataUser(binding?.user)
                     if (!destroyView){
                         setCurrentUser()
                         viewSwitcherChange.showNext()
@@ -241,7 +243,7 @@ class UserFragment: Fragment() {
         when(requestCode){
             CAMERA_REQUEST_CODE -> {
                 if (data != null){
-                    val bitmap = data.extras!!.get("data") as Bitmap
+                    val bitmap = data.extras?.get("data") as Bitmap
                     manager.uploadAvatarInDatabase(bitmap)
                     avatar?.setImageBitmap(bitmap)
                 }

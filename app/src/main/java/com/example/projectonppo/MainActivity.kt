@@ -34,10 +34,12 @@ class MainActivity : AppCompatActivity(){
         }
 
         val sideNavView = findViewById<NavigationView>(R.id.nav_menu)
-        sideNavView?.setupWithNavController(navController!!)
-
         drawerLayout = findViewById(R.id.drawerLayout)
-        setupActionBarWithNavController(navController!!, drawerLayout)
+
+        if (navController != null) {
+            sideNavView?.setupWithNavController(navController)
+            setupActionBarWithNavController(navController, drawerLayout)
+        }
 
         //adb shell am start -W -a android.intent.action.VIEW -d "sdapp://by.myapp/page/2"
         //DeepLinksManager.addNavigation(navController, this)
