@@ -1,9 +1,5 @@
 <resources>
-<<<<<<< HEAD
     <style name="AppTheme" parent="Base.Theme.AppCompat.Light.DarkActionBar">
-=======
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
->>>>>>> feature/LabWork2
         <!-- Customize your theme here. -->
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorPrimary">@color/colorPrimaryDark</item>
