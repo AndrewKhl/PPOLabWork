@@ -38,6 +38,10 @@
         <activity android:name=".LoginActivity"
             android:screenOrientation="${screenOrientation}">
         </activity>
+
+        <activity android:name=".WebActivity"
+            android:screenOrientation="${screenOrientation}">
+        </activity>
     </application>
 
 </manifest>
