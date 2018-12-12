@@ -35,13 +35,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".LoginActivity"
-            android:screenOrientation="${screenOrientation}">
-        </activity>
+        <activity android:name=".LoginActivity"/>
 
-        <activity android:name=".WebActivity"
-            android:screenOrientation="${screenOrientation}">
-        </activity>
+        <activity android:name=".WebActivity"/>
     </application>
 
 </manifest>

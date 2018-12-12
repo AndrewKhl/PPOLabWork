@@ -2,6 +2,7 @@ package com.example.projectonppo.fragments
 
 import android.app.ProgressDialog
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.projectonppo.R
 import com.example.projectonppo.adapters.NewsFeedAdapter
 import com.example.projectonppo.listeners.SettingsLoader
@@ -51,6 +53,9 @@ class NewsFragment: Fragment() {
                 adapter.links = urls!!
                 recyclerNewsFeed.adapter = adapter
                 recyclerNewsFeed.layoutManager = LinearLayoutManager(context)
+
+                //if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)
+                //    recyclerNewsFeed.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
                 progressDialog.dismiss()
             }

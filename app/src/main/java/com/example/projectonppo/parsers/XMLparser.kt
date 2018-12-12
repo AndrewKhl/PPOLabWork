@@ -12,6 +12,8 @@ class XMLparser{
             var title: String? = null
             var link: String? = null
             var description: String? = null
+            var imageLink: String? = null
+            var pubDate: String? = null
             var isItem = false
             val items: ArrayList<NewsRSS> = ArrayList()
 
@@ -28,6 +30,18 @@ class XMLparser{
 
                     if (eventType == XmlPullParser.END_TAG) {
                         if (name.equals("item", ignoreCase = true)) {
+                            if (title != null && link != null && description != null) {
+                                if (isItem) {
+                                    val item = NewsRSS(title = title, link = link, description = description, images = imageLink, date = pubDate ?: "")
+                                    items.add(item)
+                                }
+
+                                title = null
+                                link = null
+                                imageLink = null
+                                description = null
+                                pubDate = null
+                            }
                             isItem = false
                         }
                         continue
@@ -50,18 +64,8 @@ class XMLparser{
                         name.equals("title", ignoreCase = true) -> title = result
                         name.equals("link", ignoreCase = true) -> link = result
                         name.equals("description", ignoreCase = true) -> description = result
-                    }
-
-                    if (title != null && link != null && description != null) {
-                        if (isItem) {
-                            val item = NewsRSS(title = title, link = link, description = description)
-                            items.add(item)
-                        }
-
-                        title = null
-                        link = null
-                        description = null
-                        isItem = false
+                        name.equals("enclosure", ignoreCase = true)-> imageLink = xmlPullParser.getAttributeValue(0)
+                        name.equals("pubDate", ignoreCase = true) -> pubDate = result
                     }
                 }
 
