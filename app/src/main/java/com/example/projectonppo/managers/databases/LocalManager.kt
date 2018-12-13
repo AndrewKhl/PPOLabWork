@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.example.projectonppo.models.NewsRSS
 
-class LocalManager (context: Context, tableName: String) : SQLiteOpenHelper(context, "ApplicationCash", null, 1) {
+class LocalManager (context: Context?, tableName: String) : SQLiteOpenHelper(context, "ApplicationCash", null, 1) {
     private val TABLE_NAME = tableName.split(':')[1].split('/')[2].split('.')[0]
     private val COL_TITLE = "title"
     private val COL_DATE = "date"
@@ -63,7 +63,7 @@ class LocalManager (context: Context, tableName: String) : SQLiteOpenHelper(cont
         db.close()
     }
 
-    fun readRssNews(): ArrayList<NewsRSS>?{
+    fun readRssNews(): ArrayList<NewsRSS>{
         val news = ArrayList<NewsRSS>()
         val db = this.readableDatabase
         this.onUpgrade(db, 1, 1)

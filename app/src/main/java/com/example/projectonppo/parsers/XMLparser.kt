@@ -1,14 +1,13 @@
 package com.example.projectonppo.parsers
 
-import java.io.InputStream
-import org.xmlpull.v1.XmlPullParser
 import android.util.Xml
 import com.example.projectonppo.models.NewsRSS
-import org.xmlpull.v1.XmlPullParserException
+import org.xmlpull.v1.XmlPullParser
+import java.io.InputStream
 
 class XMLparser{
     companion object {
-        fun pars(inputStream: InputStream): ArrayList<NewsRSS> {
+        fun pars(inputStream: InputStream): ArrayList<NewsRSS>? {
             var title: String? = null
             var link: String? = null
             var description: String? = null
@@ -68,10 +67,12 @@ class XMLparser{
                         name.equals("pubDate", ignoreCase = true) -> pubDate = result
                     }
                 }
-
-                return items
-            } finally {
                 inputStream.close()
+                return items
+            }
+            catch (e :Exception){
+                inputStream.close()
+                return null
             }
         }
     }
