@@ -59,6 +59,7 @@ class Manager private constructor() {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             successSign = if (task.isSuccessful) {
                 setListenerOnDatabase()
+                downloadAvatarFromDatabase()
                 true
             } else
                 false

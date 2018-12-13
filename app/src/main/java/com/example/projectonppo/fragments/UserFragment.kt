@@ -104,13 +104,13 @@ class UserFragment: Fragment() {
     private fun setCurrentUser(){
         if (manager.successDownloadAvatar == true)
             avatar.setImageBitmap(manager.currentAvatar)
-            val currentUser = manager.getCurrentUser()
-            binding?.user = User(
-                    nickname = currentUser?.nickname.toString(),
-                    name = currentUser?.name.toString(),
-                    email = currentUser?.email.toString(),
-                    phone = currentUser?.phone.toString()
-            )
+        val currentUser = manager.getCurrentUser()
+        binding?.user = User(
+                nickname = currentUser?.nickname.toString(),
+                name = currentUser?.name.toString(),
+                email = currentUser?.email.toString(),
+                phone = currentUser?.phone.toString()
+        )
     }
 
     private fun waitUserLoad(){
@@ -135,14 +135,8 @@ class UserFragment: Fragment() {
             }
 
             override fun doInBackground() {
-                while(true){
-                    if ((manager.getCurrentUser() != null))
-                        break
-                }
-                manager.downloadAvatarFromDatabase()
-                while(true){
-                    if (manager.successDownloadAvatar != null)
-                        break
+                while((manager.getCurrentUser() == null) || (manager.successDownloadAvatar == null)){
+                    manager.downloadAvatarFromDatabase()
                 }
             }
         }).execute()
