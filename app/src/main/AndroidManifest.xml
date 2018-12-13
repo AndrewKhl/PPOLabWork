@@ -17,8 +17,7 @@
         android:theme="@style/AppTheme"
         android:fullBackupContent="@xml/backup_descriptor">
         <activity android:name=".MainActivity"
-            android:screenOrientation="${screenOrientation}"
-            android:configChanges="keyboardHidden|orientation|screenSize">
+            android:screenOrientation="${screenOrientation}">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

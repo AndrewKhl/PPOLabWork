@@ -54,8 +54,8 @@ class NewsFragment: Fragment() {
                 recyclerNewsFeed.adapter = adapter
                 recyclerNewsFeed.layoutManager = LinearLayoutManager(context)
 
-                //if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)
-                //    recyclerNewsFeed.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+                if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)
+                    recyclerNewsFeed.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
                 progressDialog.dismiss()
             }
