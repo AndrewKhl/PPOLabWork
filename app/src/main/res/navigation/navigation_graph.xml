@@ -11,11 +11,6 @@
         android:name="com.example.projectonppo.fragments.UserFragment"
         android:label="Account" />
     <fragment
-        tools:layout="@layout/fragment_news"
-        android:id="@+id/newsFragment"
-        android:name="com.example.projectonppo.fragments.NewsFragment"
-        android:label="News" />
-    <fragment
         tools:layout="@layout/fragment_about"
         android:id="@+id/aboutFragment"
         android:name="com.example.projectonppo.fragments.AboutFragment"

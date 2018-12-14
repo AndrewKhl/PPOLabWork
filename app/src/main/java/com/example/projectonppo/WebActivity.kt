@@ -1,8 +1,10 @@
 package com.example.projectonppo
 
 import android.annotation.TargetApi
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.MenuItem
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -15,11 +17,20 @@ class WebActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_web)
 
+        val actionBar = supportActionBar
+        actionBar?.setHomeButtonEnabled(true);
+        actionBar?.setDisplayHomeAsUpEnabled(true);
+
         webView.webViewClient = CustomWebViewClient()
         webView.settings.javaScriptEnabled = true;
 
         val arguments = intent.extras
         webView.loadUrl(arguments?.get("link")?.toString())
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        onBackPressed()
+        return true
     }
 
     override fun onBackPressed() {

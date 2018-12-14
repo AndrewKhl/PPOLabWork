@@ -1,21 +1,22 @@
 package com.example.projectonppo.fragments
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.projectonppo.NewsActivity
 import com.example.projectonppo.R
 import com.example.projectonppo.validations.ValidationForUrl
 import kotlinx.android.synthetic.main.fragment_urls.*
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.io.OutputStreamWriter
-import android.widget.AdapterView
-import androidx.navigation.fragment.findNavController
 
 
 class UrlsFragment: Fragment() {
@@ -53,9 +54,13 @@ class UrlsFragment: Fragment() {
         }
 
         urlsList.onItemClickListener = AdapterView.OnItemClickListener { parent, v, position, id ->
-            val bundle = Bundle()
+            /*val bundle = Bundle()
             bundle.putString("currentUrl", urlsAdapter.getItem(position))
-            findNavController().navigate(R.id.newsFragment, bundle)
+            findNavController().navigate(R.id.newsFragment, bundle)*/
+
+            val intent = Intent(context, NewsActivity::class.java)
+            intent.putExtra("currentUrl", urlsAdapter.getItem(position))
+            startActivity(intent)
         }
     }
 

@@ -3,6 +3,8 @@ package com.example.projectonppo.adapters
 import android.content.Context
 import android.content.Intent
 import android.media.Image
+import android.net.ConnectivityManager
+import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,9 +47,11 @@ class NewsFeedAdapter() : RecyclerView.Adapter<ViewHolder>() {
 
 class ViewHolder constructor(view: View, var context: Context) : RecyclerView.ViewHolder(view), View.OnClickListener {
     override fun onClick(v: View) {
-        val intent = Intent(context, WebActivity::class.java)
-        intent.putExtra("link", this.link)
-        startActivity(context, intent,null)
+        if (isOnline(context)){
+            val intent = Intent(context, WebActivity::class.java)
+            intent.putExtra("link", this.link)
+            startActivity(context, intent,null)
+        }
     }
 
     init {
@@ -79,8 +83,10 @@ class ViewHolder constructor(view: View, var context: Context) : RecyclerView.Vi
         }
 
 
-        if(news.images != null)
+        if((news.images != null) and (news.images != "null"))
             Picasso.with(itemView.context).load(news.images).into(imageView)
+        else
+            imageView.layoutParams.height = 0
     }
 
     private fun parseDate(currentDate: String): String {
@@ -95,5 +101,11 @@ class ViewHolder constructor(view: View, var context: Context) : RecyclerView.Vi
         }
 
         return finishDate
+    }
+
+    private fun isOnline(context: Context?): Boolean {
+        val cm = context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val netInfo = cm.activeNetworkInfo
+        return netInfo != null && netInfo.isConnectedOrConnecting
     }
 }

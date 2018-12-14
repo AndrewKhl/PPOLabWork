@@ -29,9 +29,6 @@ import com.example.projectonppo.validations.ValidationForRequired
 import com.example.projectonppo.databinding.FragmentUserBinding
 import kotlinx.android.synthetic.main.fragment_user.*
 
-// убрать while true
-//!инициализация баз данных в отдельной функции
-
 class UserFragment: Fragment() {
     private val PERMISSIONS_REQUEST_CAMERA = 1
     private val CAMERA_REQUEST_CODE = 2
@@ -64,9 +61,9 @@ class UserFragment: Fragment() {
             return false
         if ((editNicknameChange.error != null) || (editNicknameChange.text.isEmpty()))
             return false
-        if ((editNameChange.error != null) || (editNameChange.text.isEmpty()))
+        if ((editNameChange.error != null))
             return false
-        if ((editPhoneChange.error != null) || (editPhoneChange.text.isEmpty()))
+        if ((editPhoneChange.error != null))
             return false
         return true
     }
@@ -155,28 +152,23 @@ class UserFragment: Fragment() {
     private fun saveChangeUser(destroyView: Boolean = false){
         val oldDataUser = manager.getCurrentUser() ?: return
         if (!oldDataUser.compare(binding?.user)) {
-            val dialog = AlertDialog.Builder(context!!)
-            dialog.setMessage(resources.getText(R.string.save_data_message))
-            dialog.setTitle(resources.getText(R.string.warning))
-            dialog.setCancelable(false)
-            dialog.setPositiveButton(resources.getText(R.string.yes)) { _, _ ->
-                run {
+            if (destroyView) {
+                val dialog = AlertDialog.Builder(context!!)
+                dialog.setMessage(resources.getText(R.string.save_data_message))
+                dialog.setTitle(resources.getText(R.string.warning))
+                dialog.setCancelable(false)
+                dialog.setPositiveButton(resources.getText(R.string.yes)) { _, _ ->
                     manager.updateDataUser(binding?.user)
-                    if (!destroyView){
-                        setCurrentUser()
-                        viewSwitcherChange.showNext()
-                    }
                 }
-            }
 
-            dialog.setNegativeButton(resources.getText(R.string.no)) { _, _ ->
-                if (!destroyView){
-                    setCurrentUser()
-                    viewSwitcherChange.showNext()
-                }
+                dialog.setNegativeButton(resources.getText(R.string.no)) { _, _ ->}
+                dialog.show()
             }
-
-            dialog.show()
+            else {
+                manager.updateDataUser(binding?.user)
+                setCurrentUser()
+                viewSwitcherChange.showNext()
+            }
         }
         else
             if (!destroyView)

@@ -17,7 +17,8 @@
         android:theme="@style/AppTheme"
         android:fullBackupContent="@xml/backup_descriptor">
         <activity android:name=".MainActivity"
-            android:screenOrientation="${screenOrientation}">
+            android:screenOrientation="${screenOrientation}"
+            android:configChanges="screenSize|keyboardHidden|orientation">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,9 +35,13 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".LoginActivity"/>
+        <activity android:name=".LoginActivity"
+            android:configChanges="screenSize|keyboardHidden|orientation"/>
 
-        <activity android:name=".WebActivity"/>
+        <activity android:name=".WebActivity"
+            android:configChanges="screenSize|keyboardHidden|orientation"/>
+
+        <activity android:name=".NewsActivity"/>
     </application>
 
 </manifest>

@@ -1,44 +1,45 @@
-package com.example.projectonppo.fragments
+package com.example.projectonppo
 
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.res.Configuration
 import android.net.ConnectivityManager
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.os.PersistableBundle
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.example.projectonppo.R
 import com.example.projectonppo.adapters.NewsFeedAdapter
 import com.example.projectonppo.listeners.SettingsLoader
 import com.example.projectonppo.managers.databases.LocalManager
 import com.example.projectonppo.models.NewsRSS
 import com.example.projectonppo.parsers.XMLparser
-import kotlinx.android.synthetic.main.fragment_news.*
+import kotlinx.android.synthetic.main.activity_news.*
 import java.net.URL
+import android.content.Intent
+import android.view.MenuItem
 
 
-class NewsFragment: Fragment(), SwipeRefreshLayout.OnRefreshListener {
+class NewsActivity: AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
 
     private val adapter = NewsFeedAdapter()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_news)
         hiddenKeyboard()
-        return inflater.inflate(R.layout.fragment_news, container, false)
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        val actionBar = supportActionBar
+        actionBar?.setHomeButtonEnabled(true);
+        actionBar?.setDisplayHomeAsUpEnabled(true);
 
         val urlLink = getCurrentUrl()
 
-        val localManager = LocalManager(context, urlLink)
+        val localManager = LocalManager(this, urlLink)
         val urls = localManager.readRssNews()
 
         swipeAndRefreshLayout.setOnRefreshListener(this);
@@ -56,7 +57,14 @@ class NewsFragment: Fragment(), SwipeRefreshLayout.OnRefreshListener {
         }
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val myIntent = Intent(applicationContext, MainActivity::class.java)
+        startActivityForResult(myIntent, 0)
+        return true
+    }
+
     private fun getCurrentUrl(): String{
+        val arguments = intent.extras
         var urlLink = arguments?.getString("currentUrl")
 
         if(!urlLink?.startsWith("http://")!! && !urlLink.startsWith("https://"))
@@ -69,19 +77,19 @@ class NewsFragment: Fragment(), SwipeRefreshLayout.OnRefreshListener {
     {
         var urls = arrayOfLinks
         if (urls == null){
-            val localManager = LocalManager(context, getCurrentUrl())
+            val localManager = LocalManager(this, getCurrentUrl())
             urls = localManager.readRssNews()
         }
         adapter.links = urls
         recyclerNewsFeed.adapter = adapter
-        recyclerNewsFeed.layoutManager = LinearLayoutManager(context)
+        recyclerNewsFeed.layoutManager = LinearLayoutManager(this)
 
         if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)
             recyclerNewsFeed.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
     }
 
     private fun saveDateOnLocalDB(urlLink: String, arrayOfLinks: ArrayList<NewsRSS>?){
-        val localManager = LocalManager(context, urlLink)
+        val localManager = LocalManager(this, urlLink)
         if (arrayOfLinks != null) {
             localManager.clearDatabase()
             localManager.writeRssNews(arrayOfLinks)
@@ -89,12 +97,12 @@ class NewsFragment: Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun loadNetworkNews(urlLink: String){
-        if (!isOnline(context)){
-            Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show()
+        if (!isOnline(this)){
+            Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show()
             return
         }
 
-        val progressDialog = ProgressDialog(context)
+        val progressDialog = ProgressDialog(this)
         progressDialog.setMessage(resources.getText(R.string.load_news))
         progressDialog.setCancelable(false)
 
@@ -111,7 +119,7 @@ class NewsFragment: Fragment(), SwipeRefreshLayout.OnRefreshListener {
                     saveDateOnLocalDB(urlLink, urls)
                 }
                 else
-                    Toast.makeText(context, "Incorrect RSS code", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, "Incorrect RSS code", Toast.LENGTH_SHORT).show()
 
                 progressDialog.dismiss()
             }
@@ -126,10 +134,13 @@ class NewsFragment: Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     private fun backgroundLoadNews(doSwipe: Boolean = false){
         val urlLink = getCurrentUrl()
-        if (!isOnline(context)){
-            Toast.makeText(context, "No internet connection", Toast.LENGTH_SHORT).show()
+        if (!isOnline(this)){
+            Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show()
             return
         }
+
+        if (!doSwipe)
+            swipeAndRefreshLayout.isRefreshing = true
 
         var urls: ArrayList<NewsRSS>? = null
 
@@ -146,13 +157,15 @@ class NewsFragment: Fragment(), SwipeRefreshLayout.OnRefreshListener {
                         else {
                             setDateOnRecycler()
                         }
+                        Toast.makeText(applicationContext, "Downloading the latest news is complete", Toast.LENGTH_SHORT).show()
                     }
-
-                    if (doSwipe)
-                        swipeAndRefreshLayout.isRefreshing = false
+                    else
+                        Toast.makeText(applicationContext, "No latest news", Toast.LENGTH_SHORT).show()
                 }
                 else
-                    Toast.makeText(context, "Incorrect RSS code", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, "Incorrect RSS code", Toast.LENGTH_SHORT).show()
+
+                swipeAndRefreshLayout.isRefreshing = false
             }
 
             override fun doInBackground() {
@@ -169,8 +182,8 @@ class NewsFragment: Fragment(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     private fun hiddenKeyboard(){
-        val inputManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputManager.hideSoftInputFromWindow(activity?.currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+        val inputManager = applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(this.currentFocus?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
     }
 
     private fun isOnline(context: Context?): Boolean {

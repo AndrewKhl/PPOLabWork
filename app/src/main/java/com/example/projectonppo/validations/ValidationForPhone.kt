@@ -13,7 +13,7 @@ class ValidationForPhone(val editPhone: EditText?) : TextWatcher {
         val email: String  = editPhone?.text.toString()
         val emailPattern = "^(\\s*)?(\\+)?([- _():=+]?\\d[- _():=+]?){10,14}(\\s*)?\$".toRegex()
 
-        if (!email.matches(emailPattern))
+        if (!email.matches(emailPattern) && email.isNotEmpty())
             editPhone?.error = "Invalid number of phone"
     }
 }

@@ -22,7 +22,7 @@ class DeepLinksManager {
             when (pageNumber){
                 0 -> navController.navigate(R.id.userFragment)
                 1 -> navController.navigate(R.id.aboutFragment)
-                2 -> navController.navigate(R.id.newsFragment)
+                2 -> navController.navigate(R.id.urlsFragment)
             }
         }
     }
