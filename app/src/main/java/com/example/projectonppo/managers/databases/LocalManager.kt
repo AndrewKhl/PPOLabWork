@@ -1,18 +1,23 @@
 package com.example.projectonppo.managers.databases
 
+import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.widget.Toast
 import com.example.projectonppo.models.NewsRSS
+import java.io.BufferedReader
+import java.io.InputStreamReader
 
-class LocalManager (context: Context?, tableName: String) : SQLiteOpenHelper(context, "ApplicationCash", null, 1) {
-    private val TABLE_NAME = tableName.split(':')[1].split('/')[2].split('.')[0]
+class LocalManager (context: Context?, tableName: String? = null) : SQLiteOpenHelper(context, "ApplicationCash", null, 1) {
+    private var TABLE_NAME = tableName?.split(':')?.get(1)?.split('/')?.get(2)?.split('.')?.get(0) ?: ""
     private val COL_TITLE = "title"
     private val COL_DATE = "date"
     private val COL_DESCRIPTION = "description"
     private val COL_IMAGE = "image"
     private val COL_URL = "url"
+    private val fileName = "urls"
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         createNewTable(db)
@@ -63,6 +68,14 @@ class LocalManager (context: Context?, tableName: String) : SQLiteOpenHelper(con
         db.close()
     }
 
+    fun clearAllDatabases(activity: Activity){
+        val tableNames = loadUrlsWithFile(activity)
+        for (name in tableNames) {
+            this.TABLE_NAME = name.split('/')[0].split('.')[0]
+            clearDatabase()
+        }
+    }
+
     fun readRssNews(): ArrayList<NewsRSS>{
         val news = ArrayList<NewsRSS>()
         val db = this.readableDatabase
@@ -86,5 +99,26 @@ class LocalManager (context: Context?, tableName: String) : SQLiteOpenHelper(con
         result.close()
         db.close()
         return news
+    }
+
+    private fun loadUrlsWithFile(activity: Activity): ArrayList<String>{
+        val urls: ArrayList<String> = ArrayList()
+        try {
+            val inputStream = activity.openFileInput(fileName)
+            if (inputStream != null) {
+                val reader = BufferedReader(InputStreamReader(inputStream))
+                while (true) {
+                    val line: String? = reader.readLine() ?: break
+                    urls.add(line.toString())
+                }
+
+                inputStream.close()
+            }
+        }
+        catch (e: Exception) {
+            Toast.makeText(activity.applicationContext, "Exception: " + e.toString(), Toast.LENGTH_LONG).show()
+        }
+
+        return urls
     }
 }

@@ -2,10 +2,11 @@ package com.example.projectonppo
 
 import android.app.ProgressDialog
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import android.net.ConnectivityManager
 import android.os.Bundle
-import android.os.PersistableBundle
+import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -20,8 +21,6 @@ import com.example.projectonppo.models.NewsRSS
 import com.example.projectonppo.parsers.XMLparser
 import kotlinx.android.synthetic.main.activity_news.*
 import java.net.URL
-import android.content.Intent
-import android.view.MenuItem
 
 
 class NewsActivity: AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
@@ -60,6 +59,7 @@ class NewsActivity: AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val myIntent = Intent(applicationContext, MainActivity::class.java)
         startActivityForResult(myIntent, 0)
+        finish()
         return true
     }
 
@@ -159,8 +159,6 @@ class NewsActivity: AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
                         }
                         Toast.makeText(applicationContext, "Downloading the latest news is complete", Toast.LENGTH_SHORT).show()
                     }
-                    else
-                        Toast.makeText(applicationContext, "No latest news", Toast.LENGTH_SHORT).show()
                 }
                 else
                     Toast.makeText(applicationContext, "Incorrect RSS code", Toast.LENGTH_SHORT).show()

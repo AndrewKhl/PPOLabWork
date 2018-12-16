@@ -13,6 +13,7 @@ import com.example.projectonppo.listeners.SettingsLoader
 import com.example.projectonppo.MainActivity
 import com.example.projectonppo.managers.databases.Manager
 import com.example.projectonppo.R
+import com.example.projectonppo.managers.databases.LocalManager
 import com.example.projectonppo.validations.ValidationForEmail
 import com.example.projectonppo.validations.ValidationForRequired
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -22,6 +23,8 @@ class LoginFragment: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         manager.signOut()
+        val localManger = LocalManager(context)
+        localManger.clearAllDatabases(this.activity!!)
         return inflater.inflate(R.layout.fragment_login, container, false)
     }
 
